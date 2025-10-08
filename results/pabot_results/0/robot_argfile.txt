@@ -1,0 +1,19 @@
+--suite E2E Workflows
+--variable BASE_URL:https://moneydd-dev.thinkerfint.com
+--variable EMAIL:moneydd-dev@thinkerfint.com
+--variable PASSWORD:moneydd-dev
+--variable CALLER_ID:f5122a6940854cc8932f8011069d782a
+--variable PABOTLIBURI:127.0.0.1:8270
+--variable PABOTEXECUTIONPOOLID:0
+--variable PABOTISLASTEXECUTIONINPOOL:1
+--variable PABOTNUMBEROFPROCESSES:2
+--variable PABOTQUEUEINDEX:0
+--variable PABOTLASTLEVEL:
+--outputdir regression_robot/results/pabot_results/0
+--listener RobotStackTracer
+--log NONE
+--report NONE
+--xunit NONE
+--consolecolors off
+--consolemarkers off
+regression_robot/tests/e2e_workflows.robot

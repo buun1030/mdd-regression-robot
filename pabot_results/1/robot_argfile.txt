@@ -1,0 +1,16 @@
+--test Normal Base.Run Normal A02 Nano-Loan New Customer Base Scenario
+--variable CALLER_ID:8848ab2f9eed467889fd9f6115c3d6b9
+--variable PABOTLIBURI:127.0.0.1:8270
+--variable PABOTEXECUTIONPOOLID:0
+--variable PABOTISLASTEXECUTIONINPOOL:1
+--variable PABOTNUMBEROFPROCESSES:8
+--variable PABOTQUEUEINDEX:1
+--variable PABOTLASTLEVEL:
+--listener RobotStackTracer
+--log NONE
+--report NONE
+--xunit NONE
+--outputdir ./pabot_results/1
+--consolecolors off
+--consolemarkers off
+tests/normal_base.robot

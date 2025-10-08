@@ -1,0 +1,6 @@
+datasources:cede6cc2ca7a70e998b8ed10946ab46aac115a6c
+commandlineoptions:65f95c924ba97541f47949701c4e3c51192a5b43
+suitesfrom:no-suites-from-option
+file:3cdb19996b9889247cc306f00cd73bbb73c343ed
+--test Normal Base.Run Normal A02 P-Loan New Customer Base Scenario
+--test Normal Base.Run Normal A02 Nano-Loan New Customer Base Scenario

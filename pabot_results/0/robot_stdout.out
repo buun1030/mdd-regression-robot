@@ -1,0 +1,10 @@
+==============================================================================
+Normal Base                                                                   
+==============================================================================
+Run Normal A02 P-Loan New Customer Base Scenario                      | FAIL |
+Keyword 'Check Completed Status' failed after retrying for 30 seconds. The last error was: Expected 'case_status' with 'completed' value not found: book_error != completed
+------------------------------------------------------------------------------
+Normal Base                                                           | FAIL |
+1 test, 0 passed, 1 failed
+==============================================================================
+Output:  /Users/six/mdd-workspace/automate_test/regression_robot/pabot_results/0/output.xml

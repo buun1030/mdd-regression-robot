@@ -1,0 +1,34 @@
+==============================================================================
+E2E Workflows                                                                 
+==============================================================================
+Run Normal Scenarios                                                    
+  Traceback (most recent call last):
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/six/mdd-workspace/automate_test/regression_robot/tests/e2e_workflows.robot:7
+    T:  Run Normal Scenarios    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/six/mdd-workspace/automate_test/regression_robot/tests/e2e_workflows.robot:8
+      ${scenario}    IN    @{NORMAL_SCENARIOS}    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/six/mdd-workspace/automate_test/regression_robot/tests/e2e_workflows.robot:8
+      ${scenario} = {'test_id': 'a02_nanoLoan_new_customer', 'product_name': 'moneydd.nanoLoan', 'answers': {'initial_questions': [{'field_name': '_loan.loanApplicationNumber', 'field_value': 'a02_nanoLoan_new_customer',...    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/six/mdd-workspace/automate_test/regression_robot/tests/e2e_workflows.robot:9
+      Normal Workflow    ${scenario}
+      |  ${scenario} = {'test_id': 'a02_nanoLoan_new_customer', 'product_name': 'moneydd.nanoLoan', 'answers': {'initial_questions': [{'field_name': '_loan.loanApplicationNumber', 'field_value': 'a02_nanoLoan_new_customer', 'source': 'customer'}, {'field_name': '_credit.foundInAmlo', 'field_value': 'NOT_FOUND', 'source': 'customer'}, {'field_name': 'forceRejectFromBatch', 'field_value': 'false', 'source': 'customer'}, {'field_name': 'override_productTypeKey', 'field_value': '8ac4806b8c163fd8018c1f06315e0000', 'source': 'customer'}, {'field_name': 'scheduleSettings.repaymentInstallments', 'field_value': '48', 'source': 'customer'}, {'field_name': '_customerInfo.foundSuccessLoan', 'field_value': 'FOUND', 'source': 'customer'}, {'field_name': '_credit.firstBookDate', 'field_value': '1720577167', 'source': 'customer'}, {'field_name': '_credit.totalPLoanAmount', 'field_value': '30000', 'source': 'customer'}, {'field_name': '_credit.totalPLoanRepayment', 'field_value': '20000', 'source': 'customer'}, {'field_name': '_credit.totalOutstanding', 'field_value': '10000', 'source': 'customer'}, {'field_name': '_credit.totalNanoLoanAmount', 'field_value': '0', 'source': 'customer'}, {'field_name': '_credit.totalNanoLoanRepayment', 'field_value': '0', 'source': 'customer'}, {'field_name': '_credit.loanActiveAccount', 'field_value': '["1"]', 'source': 'customer'}, {'field_name': '_credit.dayPastDue', 'field_value': '0', 'source': 'customer'}, {'field_name': '_credit.existingCreditAmount', 'field_value': '10000', 'source': 'customer'}, {'field_name': '_credit.totalNanoT...
+    [ Message content over the limit has been removed. ]
+...customer'}, {'field_name': '_credit.isNcbConsentAccept', 'field_value': 'true', 'source': 'customer'}, {'field_name': '_customerInfo.authenticationType', 'field_value': 'NDID', 'source': 'customer'}], 'customer_decision': [{'field_name': '_loan.customerDecision', 'field_value': 'ACCEPT', 'source': 'customer'}, {'field_name': 'loanAmount', 'field_value': '50000', 'source': 'customer'}, {'field_name': '_loan.repaymentType', 'field_value': 'TERM', 'source': 'customer'}, {'field_name': 'scheduleSettings.repaymentInstallments', 'field_value': '12', 'source': 'customer'}]}, 'escalations': {'ca_to_sca': 'SCA', 'sca_to_md': 'MD'}, 'md_decision': 'A02', 'expected': {'task_name_substrings': {'ca': ['customer.information', 'occupation.informationPresent', 'bank.1.information', 'occupation.informationPrevious', 'informationNewCustomer', 'document.other', 'ncb.direct', 'document.main', 'informationInterest', 'informationRevolving', 'informationTerm', 'summary.ca'], 'sca': ['customer.information', 'occupation.informationPresent', 'bank.1.information', 'occupation.informationPrevious', 'informationNewCustomer', 'document.other', 'ncb.direct', 'document.main', 'informationInterest', 'informationRevolving', 'informationTerm', 'summary.sca'], 'md': ['summary.md']}, 'available_escalation_roles': {'ca': ['CA', 'SCA'], 'sca': ['CA', 'SCA', 'CM', 'MD', 'CC', 'EC'], 'md': ['CA', 'SCA', 'CM', 'MD', 'CC', 'EC']}, 'unavailable_escalation_roles': {'ca': ['CM', 'MD', 'CC', 'EC'], 'sca': [], 'md': []}, 'final_status': 'COMPLETED', 'loan_result': 'A02'}} (dict)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  /Users/six/mdd-workspace/automate_test/regression_robot/tests/e2e_workflows.robot:49
+      Should Be True    ${ca_decision_found}    Expected 'thinker.caDecision' with '__UNKNOWN__' value not found
+      |  ${ca_decision_found} = False (bool)
+______________________________________________________________________________
+| FAIL |
+Expected 'thinker.caDecision' with '__UNKNOWN__' value not found
+------------------------------------------------------------------------------
+Run GSB Lead Scenarios                                                | PASS |
+------------------------------------------------------------------------------
+E2E Workflows                                                         | FAIL |
+2 tests, 1 passed, 1 failed
+==============================================================================
+Output:  /Users/six/mdd-workspace/automate_test/regression_robot/results/pabot_results/0/output.xml

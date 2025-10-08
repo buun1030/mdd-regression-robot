@@ -1,0 +1,3 @@
+{
+    "robot.python.executable": "${workspaceFolder}/venv/bin/python"
+}

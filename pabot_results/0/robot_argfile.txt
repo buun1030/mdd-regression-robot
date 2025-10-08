@@ -1,0 +1,16 @@
+--test Normal Base.Run Normal A02 P-Loan New Customer Base Scenario
+--variable CALLER_ID:7945f3fa5c9041f5a985db247894dab1
+--variable PABOTLIBURI:127.0.0.1:8270
+--variable PABOTEXECUTIONPOOLID:1
+--variable PABOTISLASTEXECUTIONINPOOL:0
+--variable PABOTNUMBEROFPROCESSES:8
+--variable PABOTQUEUEINDEX:0
+--variable PABOTLASTLEVEL:Normal Base.Run Normal A02 P-Loan New Customer Base Scenario
+--listener RobotStackTracer
+--log NONE
+--report NONE
+--xunit NONE
+--outputdir ./pabot_results/0
+--consolecolors off
+--consolemarkers off
+tests/normal_base.robot
