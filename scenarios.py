@@ -2958,10 +2958,11 @@ NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "0", "source": "customer"},
                 {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
                 {"field_name": "_credit.dayPastDue", "field_value": "0", "source": "customer"},
-                {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"}
+                {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"},
+                {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "15000", "minimum": "5000"}
             }
         }
     ]
@@ -3026,10 +3027,11 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_credit.totalPLoanRepayment", "field_value": "0", "source": "customer"},
                 {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
                 {"field_name": "_credit.dayPastDue", "field_value": "0", "source": "customer"},
-                {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"}
+                {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"},
+                {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "15000", "minimum": "5000"}
             }
         },
         {
@@ -3050,7 +3052,7 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "49700", "minimum": "5000"}
             }
         }
     ]
