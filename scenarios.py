@@ -3031,6 +3031,27 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
             "expected": {
                 "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"}
             }
+        },
+        {
+            "answers": [
+                {"field_name": "_loan.loanRequest", "field_value": "100000", "source": "customer"},
+                {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"0\",\"0\",\"4268\",\"0\",\"10778\",\"0\",\"0\",\"0\",\"0\",\"0\",\"1906\",\"1213\",\"934.7\"]", "source": "customer"},
+                {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "FOUND", "source": "customer"},
+                {"field_name": "_credit.totalNanoTermLoanLimit", "field_value": "21100", "source": "customer"},
+                {"field_name": "_credit.totalNanoTermLoanRepayment", "field_value": "4037.39", "source": "customer"},
+                {"field_name": "_credit.totalNanoRevolvingLoanLimit", "field_value": "0", "source": "customer"},
+                {"field_name": "_credit.totalNanoLoanAmount", "field_value": "21100", "source": "customer"},
+                {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "4037.39", "source": "customer"},
+                {"field_name": "_credit.totalPLoanAmount", "field_value": "0", "source": "customer"},
+                {"field_name": "_credit.totalPLoanRepayment", "field_value": "0", "source": "customer"},
+                {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
+                {"field_name": "_credit.dayPastDue", "field_value": "0", "source": "customer"},
+                {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"},
+                {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
+            ],
+            "expected": {
+                "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"}
+            }
         }
     ]
 }
