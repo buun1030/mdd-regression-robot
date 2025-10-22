@@ -2650,13 +2650,35 @@ GSB_LEAD_NANO_LOAN_BASE_ANSWERS = {
     ]
 }
 
+CUSTOMER_DECISION_100K_TERM_ANSWERS = [
+    {"field_name": "_loan.customerDecision", "field_value": "ACCEPT", "source": "customer"},
+    {"field_name": "loanAmount", "field_value": "100000", "source": "customer"},
+    {"field_name": "_loan.repaymentType", "field_value": "TERM", "source": "customer"},
+    {"field_name": "scheduleSettings.repaymentInstallments", "field_value": "12", "source": "customer"}
+]
+
+CUSTOMER_DECISION_50K_TERM_ANSWERS = [
+    {"field_name": "_loan.customerDecision", "field_value": "ACCEPT", "source": "customer"},
+    {"field_name": "loanAmount", "field_value": "50000", "source": "customer"},
+    {"field_name": "_loan.repaymentType", "field_value": "TERM", "source": "customer"},
+    {"field_name": "scheduleSettings.repaymentInstallments", "field_value": "12", "source": "customer"}
+]
+
+CUSTOMER_DECISION_50K_REVOLVING_ANSWERS = [
+    {"field_name": "_loan.customerDecision", "field_value": "ACCEPT", "source": "customer"},
+    {"field_name": "loanAmount", "field_value": "50000", "source": "customer"},
+    {"field_name": "_loan.repaymentType", "field_value": "REVOLVING", "source": "customer"},
+    {"field_name": "scheduleSettings.repaymentInstallments", "field_value": "12", "source": "customer"}
+]
+
 # Each dictionary represents one full, independent end-to-end test run.
 # You can add as many scenarios as you need.
 
-NORMAL_P_LOAN_NEW_CUSTOMER_BASE_SCENARIO = {
+NORMAL_P_LOAN_NEW_CUSTOMER_TERM_SCENARIO = {
     "test_id": "normal_a02_p_loan_new_customer_base",
     "product_name": "moneydd.pLoan",
     "answers": NORMAL_P_LOAN_BASE_ANSWERS,
+    "customer_decision": CUSTOMER_DECISION_100K_TERM_ANSWERS,
     "escalations": {
         "ca_to_sca": "SCA",
         "sca_to_md": "MD"
@@ -2714,10 +2736,73 @@ NORMAL_P_LOAN_NEW_CUSTOMER_BASE_SCENARIO = {
     "repayment_amount": "33000"
 }
 
-NORMAL_P_LOAN_OLD_CUSTOMER_BASE_SCENARIO = {
+NORMAL_P_LOAN_NEW_CUSTOMER_REVOLVING_SCENARIO = {
     "test_id": "normal_a02_p_loan_new_customer_base",
     "product_name": "moneydd.pLoan",
     "answers": NORMAL_P_LOAN_BASE_ANSWERS,
+    "customer_decision": CUSTOMER_DECISION_50K_REVOLVING_ANSWERS,
+    "escalations": {
+        "ca_to_sca": "SCA",
+        "sca_to_md": "MD"
+    },
+    "md_decision": "A02",
+    "available_credit_limit_name": "_credit.availablePLoanCreditLimit",
+    "expected": {
+        "found_success_loan": "NOT_FOUND",
+        "task_name_substrings": {
+            "ca": [
+                "customer.information",
+                "occupation.informationPresent",
+                "bank.1.information",
+                "occupation.informationPrevious",
+                "informationNewCustomer",
+                "document.other",
+                "ncb.direct",
+                "document.main",
+                "informationInterest",
+                "informationRevolving",
+                "informationTerm",
+                "summary.ca"
+            ],
+            "sca": [
+                "customer.information",
+                "occupation.informationPresent",
+                "bank.1.information",
+                "occupation.informationPrevious",
+                "informationNewCustomer",
+                "document.other",
+                "ncb.direct",
+                "document.main",
+                "informationInterest",
+                "informationRevolving",
+                "informationTerm",
+                "summary.sca"
+            ],
+            "md": [
+                "summary.md"
+            ]
+        },
+        "available_escalation_roles": {
+            "ca": ["CA", "SCA"],
+            "sca": ["CA", "SCA", "CM", "MD", "CC", "EC"],
+            "md": ["CA", "SCA", "CM", "MD", "CC", "EC"]
+        },
+        "unavailable_escalation_roles": {
+            "ca": ["CM", "MD", "CC", "EC"],
+            "sca": [],
+            "md": []
+        },
+        "final_status": "COMPLETED",
+        "loan_result": "A02"
+    },
+    "repayment_amount": "0"
+}
+
+NORMAL_P_LOAN_OLD_CUSTOMER_TERM_SCENARIO = {
+    "test_id": "normal_a02_p_loan_new_customer_base",
+    "product_name": "moneydd.pLoan",
+    "answers": NORMAL_P_LOAN_BASE_ANSWERS,
+    "customer_decision": CUSTOMER_DECISION_100K_TERM_ANSWERS,
     "escalations": {
         "ca_to_sca": "SCA",
         "sca_to_md": "MD"
@@ -2776,10 +2861,11 @@ NORMAL_P_LOAN_OLD_CUSTOMER_BASE_SCENARIO = {
     "repayment_amount": "0"
 }
 
-NORMAL_NANO_LOAN_NEW_CUSTOMER_BASE_SCENARIO = {
+NORMAL_NANO_LOAN_NEW_CUSTOMER_TERM_SCENARIO = {
     "test_id": "normal_a02_nano_loan_new_customer_base",
     "product_name": "moneydd.nanoLoan",
     "answers": NORMAL_NANO_LOAN_BASE_ANSWERS,
+    "customer_decision": CUSTOMER_DECISION_50K_TERM_ANSWERS,
     "escalations": {
         "ca_to_sca": "SCA",
         "sca_to_md": "MD"
@@ -2837,10 +2923,11 @@ NORMAL_NANO_LOAN_NEW_CUSTOMER_BASE_SCENARIO = {
     "repayment_amount": "18000"
 }
 
-NORMAL_NANO_LOAN_OLD_CUSTOMER_BASE_SCENARIO = {
+NORMAL_NANO_LOAN_OLD_CUSTOMER_TERM_SCENARIO = {
     "test_id": "normal_a02_nano_loan_old_customer_base",
     "product_name": "moneydd.nanoLoan",
     "answers": NORMAL_NANO_LOAN_BASE_ANSWERS,
+    "customer_decision": CUSTOMER_DECISION_50K_TERM_ANSWERS,
     "escalations": {
         "ca_to_sca": "SCA",
         "sca_to_md": "MD"
@@ -2897,6 +2984,18 @@ NORMAL_NANO_LOAN_OLD_CUSTOMER_BASE_SCENARIO = {
         "loan_result": "A02"
     },
     "repayment_amount": "0"
+}
+
+NORMAL_NANO_LOAN_OLD_CUSTOMER_TERM_WITH_EXISTING_REVOLVING_SCENARIO = {
+    "test_id": "normal_nano_loan_old_customer_with_existing_revolving",
+    "product_name": "moneydd.nanoLoan",
+    "answers": NORMAL_NANO_LOAN_BASE_ANSWERS,
+    "customer_decision": CUSTOMER_DECISION_50K_TERM_ANSWERS,
+    "available_credit_limit_name": "_credit.availableNanoLoanCreditLimit",
+    "expected": {
+        "found_success_loan": "FOUND",
+        "available_credit_limit": "100000"
+    }
 }
 
 NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {

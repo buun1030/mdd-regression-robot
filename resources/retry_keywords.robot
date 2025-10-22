@@ -37,6 +37,19 @@ Check Approved Status
     Should Be True     ${all_tasks_length} > 0    all_tasks should not be empty
     RETURN   ${case_detail}
 
+Check Rejected Status
+    [Arguments]    ${session_id}    ${case_id}
+    ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}
+    ${loan_status_rejected_found}=    Set Variable    ${False}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    '${item['field_name']}' == 'thinker.loanStatus' and '${item['value']}' == 'REJECTED'
+            ${loan_status_rejected_found}=    Set Variable    ${True}
+            BREAK
+        END
+    END
+    Should Be True     ${loan_status_rejected_found}    Expected 'thinker.loanStatus' with 'REJECTED' value not found
+    RETURN   ${case_detail}
+
 Check Completed Status
     [Arguments]    ${session_id}    ${case_id}    ${scenario}
     ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}

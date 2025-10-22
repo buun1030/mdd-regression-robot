@@ -3,89 +3,51 @@ Resource    ../resources/thinker_keywords.robot
 Resource    ../resources/retry_keywords.robot
 Resource    ../resources/global_setup.robot
 Library     ../resources/customer_info_generators.py
+Library     ../resources/tcg.py
 Variables    ../scenarios.py
 Variables    ../vars.yaml
 Suite Setup    Global Suite Setup
 
 ***Test Cases***
 Run Normal A02 P-Loan Base Scenario
-    ${customer_info_national_id_answer}=    Normal Workflow    ${NORMAL_P_LOAN_NEW_CUSTOMER_BASE_SCENARIO}
-    Mambu Workflow    ${customer_info_national_id_answer}    ${NORMAL_P_LOAN_NEW_CUSTOMER_BASE_SCENARIO['repayment_amount']}    10
-    Normal Workflow    ${NORMAL_P_LOAN_OLD_CUSTOMER_BASE_SCENARIO}    ${customer_info_national_id_answer}
+    ${customer_info_national_id_answer}=    Normal Workflow    ${NORMAL_P_LOAN_NEW_CUSTOMER_TERM_SCENARIO}
+    Mambu Workflow    ${customer_info_national_id_answer}    ${NORMAL_P_LOAN_NEW_CUSTOMER_TERM_SCENARIO['repayment_amount']}    10
+    Normal Workflow    ${NORMAL_P_LOAN_OLD_CUSTOMER_TERM_SCENARIO}    ${customer_info_national_id_answer}
 
 Run Normal A02 Nano-Loan Base Scenario
-    ${customer_info_national_id_answer}=    Normal Workflow    ${NORMAL_NANO_LOAN_NEW_CUSTOMER_BASE_SCENARIO}
-    Mambu Workflow    ${customer_info_national_id_answer}    ${NORMAL_NANO_LOAN_NEW_CUSTOMER_BASE_SCENARIO['repayment_amount']}
-    Normal Workflow    ${NORMAL_NANO_LOAN_OLD_CUSTOMER_BASE_SCENARIO}    ${customer_info_national_id_answer}
+    ${customer_info_national_id_answer}=    Normal Workflow    ${NORMAL_NANO_LOAN_NEW_CUSTOMER_TERM_SCENARIO}
+    Mambu Workflow    ${customer_info_national_id_answer}    ${NORMAL_NANO_LOAN_NEW_CUSTOMER_TERM_SCENARIO['repayment_amount']}
+    Normal Workflow    ${NORMAL_NANO_LOAN_OLD_CUSTOMER_TERM_SCENARIO}    ${customer_info_national_id_answer}
+
+Run Normal A02 P-Loan Did Not Satisfy Tcg Criteria Negative Scenario
+    ${scenario}=    Set Variable    ${NORMAL_P_LOAN_NEW_CUSTOMER_REVOLVING_SCENARIO}
+    ${customer_info_national_id_answer}=    Normal Workflow    ${scenario}
+    ${session_id}    ${case_id}    ${customer_info_national_id_answer}=    Initial Normal Workflow    ${NORMAL_NANO_LOAN_OLD_CUSTOMER_TERM_WITH_EXISTING_REVOLVING_SCENARIO}    ${customer_info_national_id_answer}
+    Log    Step A: Answer Did Not Satisfy Tcg Criteria
+    ${tcg_action}=    Build Tcg Action Answer    DID_NOT_SATISFY_TCG_CRITERIA
+    Answer Questions    ${session_id}    ${case_id}    ${tcg_action}
+    Log    Step A: Did Not Satisfy Tcg Criteria answered.
+
+    Log    Step B: Verify Loan Result & Status are reject
+    Sleep    6s
+    ${timeout}=    Set Variable    15s
+    ${retry_interval}=    Set Variable    4s
+    ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Rejected Status    ${session_id}    ${case_id}
+
+    ${loan_result_found}=    Set Variable    ${False}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    '${item['field_name']}' == 'thinker.loanResult' and '${item['value']}' == 'R07'
+            ${loan_result_found}=    Set Variable    ${True}
+            BREAK
+        END
+    END
+    Should Be True    ${loan_result_found}    Expected 'thinker.loanResult' with 'R07' value not found
+    Log    Step B: Loan Result & Status verified.
 
 ***Keywords***
 Normal Workflow
     [Arguments]    ${scenario}    ${customer_info_national_id_answer}=${None}
-    Log    --- Starting Normal Workflow Test: ${scenario['test_id']} ---
-
-    ${is_new_customer}=    Set Variable    ${False}
-    IF    ${customer_info_national_id_answer} == ${None}
-        ${is_new_customer}=    Set Variable    ${True}
-        ${customer_info_national_id_answer}=    Build Unique Customer Info Answer
-    END
-
-    Log    Step 1: Logging in...
-    ${session_id}=    Login    email=${email}    password=${password}
-    Should Not Be Empty    ${session_id}
-    Log    Step 1: Login successful.
-
-    Log    Step 2: Applying for Product...
-    ${case_id}=    Apply For Product    ${session_id}    ${scenario['product_name']}
-    Should Not Be Empty    ${case_id}
-    Log    Step 2: Product applied. Case ID: ${case_id}
-
-    Log    Step 3.1: Answering _customerInfo.nationalIdNumber...
-    Answer Questions    ${session_id}    ${case_id}    ${customer_info_national_id_answer}
-
-    Log    Step 3.2: Answering Initial Questions...
-    Answer Questions    ${session_id}    ${case_id}    ${scenario['answers']['initial_questions']}
-    Log    Step 3.2: Initial Questions answered.
-
-    Log    Step 4: Submitting Case...
-    Submit Case    ${session_id}    ${case_id}
-    Log    Step 4: Case submitted.
-
-    Log    Step 5: Completing Batch Process...
-    Complete Batch Process    ${session_id}    ${case_id}
-    Log    Step 5: Batch Process completed.
-
-    Log    Step 6: Verifying Case Details (CA Decision Unknown, Loan Status VERIFYING, etc.)...
-    Sleep    12s
-    ${timeout}=    Set Variable    30s
-    ${retry_interval}=    Set Variable    7s
-    ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check CA Decision Unknown    ${session_id}    ${case_id}
-
-    ${loan_status_found}=    Set Variable    ${False}
-    FOR    ${item}    IN    @{case_detail['customer_data']}
-        IF    '${item['field_name']}' == 'thinker.loanStatus' and '${item['value']}' == 'VERIFYING'
-            ${loan_status_found}=    Set Variable    ${True}
-            BREAK
-        END
-    END
-    Should Be True    ${loan_status_found}    Expected 'thinker.loanStatus' with 'VERIFYING' value not found
-
-    ${is_found_success_loan_corrected}=    Set Variable    ${False}
-    FOR    ${item}    IN    @{case_detail['customer_data']}
-        IF    $item['field_name'] == '_customerInfo.foundSuccessLoan' and $item['value'] == $scenario['expected']['found_success_loan']
-            ${is_found_success_loan_corrected}=    Set Variable    ${True}
-            BREAK
-        END
-    END
-    Should Be True    ${is_found_success_loan_corrected}    Expected '_customerInfo.foundSuccessLoan' with '${scenario['expected']['found_success_loan']}' value not found or not matched
-
-    Run Keyword If    ${is_new_customer} == ${False}    Check Available Credit Limit    ${session_id}    ${case_id}    ${scenario['available_credit_limit_name']}    ${scenario['expected']['available_credit_limit']}
-
-    ${verifying_field_list_length}=    Get Length    ${case_detail['verifying_field_list']}
-    Should Be True    ${verifying_field_list_length} > 0    verifying_field_list should not be empty
-
-    ${all_tasks_length}=    Get Length    ${case_detail['all_tasks']}
-    Should Be True    ${all_tasks_length} > 0    all_tasks should not be empty
-    Log    Step 6: Case Details verified.
+    ${session_id}    ${case_id}    ${customer_info_national_id_answer}=    Initial Normal Workflow    ${scenario}    ${customer_info_national_id_answer}
 
     Log    Step 7: CA Role...
     Log    7.1: Claiming CA case...
@@ -327,7 +289,7 @@ Normal Workflow
     Log    Step 10: Approved Status verified.
 
     Log    Step 11: Customer Decision...
-    Answer Questions    ${session_id}    ${case_id}    ${scenario['answers']['customer_decision']}
+    Answer Questions    ${session_id}    ${case_id}    ${scenario['customer_decision']}
     Log    Step 11: Customer Decision answered.
 
     Log    Step 12: Completed Status...
@@ -344,6 +306,77 @@ Normal Workflow
     Log    Step 13: Booking Detail retrieved.
 
     RETURN    ${customer_info_national_id_answer}
+
+Initial Normal Workflow
+    [Arguments]    ${scenario}    ${customer_info_national_id_answer}=${None}
+    Log    --- Starting Normal Workflow Test: ${scenario['test_id']} ---
+
+    ${is_new_customer}=    Set Variable    ${False}
+    IF    ${customer_info_national_id_answer} == ${None}
+        ${is_new_customer}=    Set Variable    ${True}
+        ${customer_info_national_id_answer}=    Build Unique Customer Info Answer
+    END
+
+    Log    Step 1: Logging in...
+    ${session_id}=    Login    email=${email}    password=${password}
+    Should Not Be Empty    ${session_id}
+    Log    Step 1: Login successful.
+
+    Log    Step 2: Applying for Product...
+    ${case_id}=    Apply For Product    ${session_id}    ${scenario['product_name']}
+    Should Not Be Empty    ${case_id}
+    Log    Step 2: Product applied. Case ID: ${case_id}
+
+    Log    Step 3.1: Answering _customerInfo.nationalIdNumber...
+    Answer Questions    ${session_id}    ${case_id}    ${customer_info_national_id_answer}
+    Log    Step 3.1: _customerInfo.nationalIdNumber answered.
+
+    Log    Step 3.2: Answering Initial Questions...
+    Answer Questions    ${session_id}    ${case_id}    ${scenario['answers']['initial_questions']}
+    Log    Step 3.2: Initial Questions answered.
+
+    Log    Step 4: Submitting Case...
+    Submit Case    ${session_id}    ${case_id}
+    Log    Step 4: Case submitted.
+
+    Log    Step 5: Completing Batch Process...
+    Complete Batch Process    ${session_id}    ${case_id}
+    Log    Step 5: Batch Process completed.
+
+    Log    Step 6: Verifying Case Details (CA Decision Unknown, Loan Status VERIFYING, etc.)...
+    Sleep    12s
+    ${timeout}=    Set Variable    30s
+    ${retry_interval}=    Set Variable    7s
+    ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check CA Decision Unknown    ${session_id}    ${case_id}
+
+    ${loan_status_found}=    Set Variable    ${False}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    '${item['field_name']}' == 'thinker.loanStatus' and '${item['value']}' == 'VERIFYING'
+            ${loan_status_found}=    Set Variable    ${True}
+            BREAK
+        END
+    END
+    Should Be True    ${loan_status_found}    Expected 'thinker.loanStatus' with 'VERIFYING' value not found
+
+    ${is_found_success_loan_corrected}=    Set Variable    ${False}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    $item['field_name'] == '_customerInfo.foundSuccessLoan' and $item['value'] == $scenario['expected']['found_success_loan']
+            ${is_found_success_loan_corrected}=    Set Variable    ${True}
+            BREAK
+        END
+    END
+    Should Be True    ${is_found_success_loan_corrected}    Expected '_customerInfo.foundSuccessLoan' with '${scenario['expected']['found_success_loan']}' value not found or not matched
+
+    Run Keyword If    ${is_new_customer} == ${False}    Check Available Credit Limit    ${session_id}    ${case_id}    ${scenario['available_credit_limit_name']}    ${scenario['expected']['available_credit_limit']}
+
+    ${verifying_field_list_length}=    Get Length    ${case_detail['verifying_field_list']}
+    Should Be True    ${verifying_field_list_length} > 0    verifying_field_list should not be empty
+
+    ${all_tasks_length}=    Get Length    ${case_detail['all_tasks']}
+    Should Be True    ${all_tasks_length} > 0    all_tasks should not be empty
+    Log    Step 6: Case Details verified.
+
+    RETURN    ${session_id}    ${case_id}    ${customer_info_national_id_answer}
 
 Mambu Workflow
     [Arguments]    ${customer_info_national_id_answer}    ${repayment_amount}    ${fee_amount}=${None}
