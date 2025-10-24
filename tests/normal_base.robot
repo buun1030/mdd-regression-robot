@@ -317,31 +317,17 @@ Initial Normal Workflow
         ${customer_info_national_id_answer}=    Build Unique Customer Info Answer
     END
 
-    Log    Step 1: Logging in...
     ${session_id}=    Login    email=${email}    password=${password}
     Should Not Be Empty    ${session_id}
-    Log    Step 1: Login successful.
 
-    Log    Step 2: Applying for Product...
     ${case_id}=    Apply For Product    ${session_id}    ${scenario['product_name']}
     Should Not Be Empty    ${case_id}
-    Log    Step 2: Product applied. Case ID: ${case_id}
 
-    Log    Step 3.1: Answering _customerInfo.nationalIdNumber...
     Answer Questions    ${session_id}    ${case_id}    ${customer_info_national_id_answer}
-    Log    Step 3.1: _customerInfo.nationalIdNumber answered.
-
-    Log    Step 3.2: Answering Initial Questions...
     Answer Questions    ${session_id}    ${case_id}    ${scenario['answers']['initial_questions']}
-    Log    Step 3.2: Initial Questions answered.
 
-    Log    Step 4: Submitting Case...
     Submit Case    ${session_id}    ${case_id}
-    Log    Step 4: Case submitted.
-
-    Log    Step 5: Completing Batch Process...
     Complete Batch Process    ${session_id}    ${case_id}
-    Log    Step 5: Batch Process completed.
 
     Log    Step 6: Verifying Case Details (CA Decision Unknown, Loan Status VERIFYING, etc.)...
     Sleep    12s

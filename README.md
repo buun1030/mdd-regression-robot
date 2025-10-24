@@ -4,22 +4,17 @@ This project contains regression tests for the application, implemented using Ro
 
 ## Prerequisites
 
+Before running the tests, activate the virtual environment:
+
 ```bash
 python3 -m venv venv
+source venv/bin/activate
 ```
 
 Before running the tests, make sure you have Python and pip installed. Then, install the project dependencies:
 
 ```bash
 pip install -r requirements.txt
-```
-
-## Activating the Virtual Environment
-
-Before running the tests, activate the virtual environment:
-
-```bash
-source venv/bin/activate
 ```
 
 ## Running the Tests
