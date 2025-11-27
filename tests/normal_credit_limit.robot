@@ -68,12 +68,24 @@ Normal Credit Limit Sensitivity
     Log    Step 6: Case Details verified.
 
     Log    Step 7: Revolving Credit Limit Test Cases...
+    @{failures}=    Create List
     FOR    ${case}    IN    @{scenario['cases']}
+        Log    --- Running Credit Limit Case ---
         Answer Questions    ${session_id}    ${case_id}    ${case['answers']}
         Sleep    5s
-        ${timeout}=    Set Variable    10s
-        ${retry_interval}=    Set Variable    3s
-        ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Revolving Credit Limit Updated    ${session_id}    ${case_id}    ${case['expected']['revolving_credit_limit']}
-        Log    Verified for case with answers: ${case['answers']} and expected limit: ${case['expected']['revolving_credit_limit']}
+        ${case_detail}    ${actual_max_value}    ${actual_min_value}=    Check Revolving Credit Limit Updated    ${session_id}    ${case_id}    ${case['expected']['revolving_credit_limit']}
+        ${max_status}    ${max_error}=    Run Keyword And Ignore Error    Should Be Equal As Strings    ${actual_max_value}    ${case['expected']['revolving_credit_limit']['maximum']}
+        IF    '${max_status}' == 'FAIL'
+            Append To List    ${failures}    ${max_error}
+        END
+        ${min_status}    ${min_error}=    Run Keyword And Ignore Error    Should Be Equal As Strings    ${actual_min_value}    ${case['expected']['revolving_credit_limit']['minimum']}
+        IF    '${min_status}' == 'FAIL'
+            Append To List    ${failures}    ${min_error}
+        END
+    END
+    ${failures_count}=    Get Length    ${failures}
+    IF    ${failures_count} > 0
+        ${all_failures}=    Catenate    SEPARATOR=\n\n    @{failures}
+        Fail    ${failures_count} Revolving Credit Limit test case(s) failed:\n${all_failures}
     END
     Log    Step 7: Revolving Credit Limit Test Cases completed.
