@@ -3,7 +3,7 @@ Resource    ../resources/thinker_keywords.robot
 Resource    ../resources/retry_keywords.robot
 Resource    ../resources/global_setup.robot
 Library     ../resources/customer_info_generators.py
-Library     ../resources/tcg.py
+Library     ../resources/answers.py
 Variables    ../scenarios.py
 Variables    ../vars.yaml
 Suite Setup    Global Suite Setup
@@ -42,6 +42,52 @@ Run Normal A02 P-Loan Did Not Satisfy Tcg Criteria Negative Scenario
         END
     END
     Should Be True    ${loan_result_found}    Expected 'thinker.loanResult' with 'R07' value not found
+    Log    Step B: Loan Result & Status verified.
+
+Run P-Loan R05 NCB Source NOT_TRUST and Invalid NCB Grade
+    ${session_id}    ${case_id}    ${customer_info_national_id_answer}=    Initial Normal Workflow    ${NORMAL_P_LOAN_NEW_CUSTOMER_TERM_SCENARIO}
+    Log    Step A: Answer NCB Source NOT_TRUST and Invalid NCB Grade
+    ${answers}=    Build Ncb Not Trust And Invalid Grade Answer
+    Answer Questions    ${session_id}    ${case_id}    ${answers}
+    Log    Step A: NCB Source NOT_TRUST and Invalid NCB Grade answered.
+
+    Log    Step B: Verify Loan Result & Status are reject
+    Sleep    6s
+    ${timeout}=    Set Variable    15s
+    ${retry_interval}=    Set Variable    4s
+    ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Rejected Status    ${session_id}    ${case_id}
+
+    ${loan_result_found}=    Set Variable    ${False}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    '${item['field_name']}' == 'thinker.loanResult' and '${item['value']}' == 'R05'
+            ${loan_result_found}=    Set Variable    ${True}
+            BREAK
+        END
+    END
+    Should Be True    ${loan_result_found}    Expected 'thinker.loanResult' with 'R05' value not found
+    Log    Step B: Loan Result & Status verified.
+
+Run Nano-Loan R05 NCB Source NOT_TRUST and Invalid NCB Grade
+    ${session_id}    ${case_id}    ${customer_info_national_id_answer}=    Initial Normal Workflow    ${NORMAL_NANO_LOAN_NEW_CUSTOMER_TERM_SCENARIO}
+    Log    Step A: Answer NCB Source NOT_TRUST and Invalid NCB Grade
+    ${answers}=    Build Ncb Not Trust And Invalid Grade Answer
+    Answer Questions    ${session_id}    ${case_id}    ${answers}
+    Log    Step A: NCB Source NOT_TRUST and Invalid NCB Grade answered.
+
+    Log    Step B: Verify Loan Result & Status are reject
+    Sleep    6s
+    ${timeout}=    Set Variable    15s
+    ${retry_interval}=    Set Variable    4s
+    ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Rejected Status    ${session_id}    ${case_id}
+
+    ${loan_result_found}=    Set Variable    ${False}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    '${item['field_name']}' == 'thinker.loanResult' and '${item['value']}' == 'R05'
+            ${loan_result_found}=    Set Variable    ${True}
+            BREAK
+        END
+    END
+    Should Be True    ${loan_result_found}    Expected 'thinker.loanResult' with 'R05' value not found
     Log    Step B: Loan Result & Status verified.
 
 ***Keywords***

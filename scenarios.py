@@ -3011,29 +3011,20 @@ NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "50000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "50000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "50000", "minimum": "5000"}
             }
         },
         {
             "answers": [
-                {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-                {"field_name": "_occupation.incomeAmount", "field_value": "900", "source": "customer"},
-                {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"0\"]", "source": "customer"},
-                {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-            ],
-            "expected": {
-                "revolving_credit_limit": {"maximum": "5000", "minimum": "5000"}
-            }
-        },
-        {
-            "answers": [
-                {"field_name": "_loan.loanRequest", "field_value": "186000", "source": "customer"},
+                {"field_name": "_loan.loanRequest", "field_value": "1100000", "source": "customer"},
                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"30000\"]", "source": "customer"},
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "186000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "1000000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "1000000", "minimum": "5000"}
             }
         },
         {
@@ -3044,7 +3035,8 @@ NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "9000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "9000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "9000", "minimum": "5000"}
             }
         },
         {
@@ -3055,7 +3047,8 @@ NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "8000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "8000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "-1", "minimum": "-1"}
             }
         },
         {
@@ -3063,10 +3056,22 @@ NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"664900\"]", "source": "customer"},
-                {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
+                {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "FOUND", "source": "customer"},
+                {"field_name": "_credit.totalPLoanTermLoanLimit", "field_value": "985000", "source": "customer"},
+                {"field_name": "_credit.totalPLoanTermLoanRepayment", "field_value": "30000", "source": "customer"},
+                {"field_name": "_credit.totalPLoanRevolvingLoanLimit", "field_value": "20000", "source": "customer"},
+                {"field_name": "_credit.totalPLoanAmount", "field_value": "985000", "source": "customer"},
+                {"field_name": "_credit.totalPLoanRepayment", "field_value": "30000", "source": "customer"},
+                {"field_name": "_credit.totalNanoLoanAmount", "field_value": "0", "source": "customer"},
+                {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "0", "source": "customer"},
+                {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
+                {"field_name": "_credit.dayPastDue", "field_value": "0", "source": "customer"},
+                {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"},
+                {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "-1", "minimum": "-1"}
+                "revolving_credit_limit": {"maximum": "-1", "minimum": "-1"},
+                "term_credit_limit": {"maximum": "-1", "minimum": "-1"}
             }
         },
         {
@@ -3088,7 +3093,8 @@ NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "25000", "minimum": "5000"}
             }
         }
     ]
@@ -3107,18 +3113,8 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "70000", "minimum": "5000"}
-            }
-        },
-        {
-            "answers": [
-                {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-                {"field_name": "_occupation.incomeAmount", "field_value": "900", "source": "customer"},
-                {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"0\"]", "source": "customer"},
-                {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-            ],
-            "expected": {
-                "revolving_credit_limit": {"maximum": "5000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "70000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "70000", "minimum": "5000"}
             }
         },
         {
@@ -3129,7 +3125,8 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "100000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "100000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "100000", "minimum": "5000"}
             }
         },
         {
@@ -3140,7 +3137,8 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "9000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "9000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "9000", "minimum": "5000"}
             }
         },
         {
@@ -3151,7 +3149,8 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "8000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "8000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "-1", "minimum": "-1"}
             }
         },
         {
@@ -3162,7 +3161,8 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "-1", "minimum": "-1"}
+                "revolving_credit_limit": {"maximum": "-1", "minimum": "-1"},
+                "term_credit_limit": {"maximum": "-1", "minimum": "-1"}
             }
         },
         {
@@ -3184,7 +3184,8 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "25000", "minimum": "5000"}
             }
         },
         {
@@ -3206,7 +3207,8 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
             ],
             "expected": {
-                "revolving_credit_limit": {"maximum": "82900", "minimum": "5000"}
+                "revolving_credit_limit": {"maximum": "82900", "minimum": "5000"},
+                "term_credit_limit": {"maximum": "82900", "minimum": "5000"}
             }
         }
     ]

@@ -67,7 +67,7 @@ Normal Credit Limit Sensitivity
     Should Be True    ${all_tasks_length} > 0    all_tasks should not be empty
     Log    Step 6: Case Details verified.
 
-    Log    Step 7: Revolving Credit Limit Test Cases...
+    Log    Step 7: Credit Limit Test Cases...
     @{failures}=    Create List
     FOR    ${case}    IN    @{scenario['cases']}
         Log    --- Running Credit Limit Case ---
@@ -82,10 +82,19 @@ Normal Credit Limit Sensitivity
         IF    '${min_status}' == 'FAIL'
             Append To List    ${failures}    ${min_error}
         END
+        ${case_detail}    ${actual_max_value}    ${actual_min_value}=    Check Term Credit Limit Updated    ${session_id}    ${case_id}    ${case['expected']['term_credit_limit']}
+        ${max_status}    ${max_error}=    Run Keyword And Ignore Error    Should Be Equal As Strings    ${actual_max_value}    ${case['expected']['term_credit_limit']['maximum']}
+        IF    '${max_status}' == 'FAIL'
+            Append To List    ${failures}    ${max_error}
+        END
+        ${min_status}    ${min_error}=    Run Keyword And Ignore Error    Should Be Equal As Strings    ${actual_min_value}    ${case['expected']['term_credit_limit']['minimum']}
+        IF    '${min_status}' == 'FAIL'
+            Append To List    ${failures}    ${min_error}
+        END
     END
     ${failures_count}=    Get Length    ${failures}
     IF    ${failures_count} > 0
         ${all_failures}=    Catenate    SEPARATOR=\n\n    @{failures}
-        Fail    ${failures_count} Revolving Credit Limit test case(s) failed:\n${all_failures}
+        Fail    ${failures_count} Credit Limit test case(s) failed:\n${all_failures}
     END
-    Log    Step 7: Revolving Credit Limit Test Cases completed.
+    Log    Step 7: Credit Limit Test Cases completed.

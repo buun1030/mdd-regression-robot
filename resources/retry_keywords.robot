@@ -155,6 +155,37 @@ Check Revolving Credit Limit Updated
     END
     RETURN   ${case_detail}    ${actual_max_value}    ${actual_min_value}
 
+Check Term Credit Limit Updated
+    [Arguments]    ${session_id}    ${case_id}    ${expected_limit}
+    ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}
+    ${is_max_term_credit_limit_corrected}=    Set Variable    ${False}
+    ${actual_max_value}=    Set Variable    ${None}
+    ${actual_min_value}=    Set Variable    ${None}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    '${item['field_name']}' == '_loan.1.rangeMaximumLimit'
+            ${actual_max_value}=    Set Variable    ${item['value']}
+            IF    '${item['value']}' == '${expected_limit['maximum']}'
+                ${is_max_term_credit_limit_corrected}=    Set Variable    ${True}
+                BREAK
+            ELSE
+                Log    ERROR: Maximum term credit limit value '${item['value']}' does not match expected value '${expected_limit['maximum']}'
+            END
+        END
+    END
+    ${is_min_term_credit_limit_corrected}=    Set Variable    ${False}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    '${item['field_name']}' == '_loan.1.rangeMinimumLimit'
+            ${actual_min_value}=    Set Variable    ${item['value']}
+            IF    '${item['value']}' == '${expected_limit['minimum']}'
+                ${is_min_term_credit_limit_corrected}=    Set Variable    ${True}
+                BREAK
+            ELSE
+                Log    ERROR: Minimum term credit limit value '${item['value']}' does not match expected value '${expected_limit['minimum']}'
+            END
+        END
+    END
+    RETURN   ${case_detail}    ${actual_max_value}    ${actual_min_value}
+
 Check Available Credit Limit
     [Arguments]    ${session_id}    ${case_id}    ${available_limit_name}    ${available_limit}
     ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}
