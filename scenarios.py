@@ -3005,6 +3005,7 @@ NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {
     "cases": [
         {
             "answers": [
+                {"field_name": "scheduleSettings.repaymentInstallments", "field_value": "24", "source": "customer"},
                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"30000\"]", "source": "customer"},
@@ -3195,10 +3196,10 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"0\",\"0\",\"4268\",\"0\",\"10778\",\"0\",\"0\",\"0\",\"0\",\"0\",\"1906\",\"1213\",\"934.7\"]", "source": "customer"},
                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "FOUND", "source": "customer"},
                 {"field_name": "_credit.totalNanoTermLoanLimit", "field_value": "21100", "source": "customer"},
-                {"field_name": "_credit.totalNanoTermLoanRepayment", "field_value": "4037.39", "source": "customer"},
+                {"field_name": "_credit.totalNanoTermLoanRepayment", "field_value": "4000", "source": "customer"},
                 {"field_name": "_credit.totalNanoRevolvingLoanLimit", "field_value": "0", "source": "customer"},
                 {"field_name": "_credit.totalNanoLoanAmount", "field_value": "21100", "source": "customer"},
-                {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "4037.39", "source": "customer"},
+                {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "4000", "source": "customer"},
                 {"field_name": "_credit.totalPLoanAmount", "field_value": "0", "source": "customer"},
                 {"field_name": "_credit.totalPLoanRepayment", "field_value": "0", "source": "customer"},
                 {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
