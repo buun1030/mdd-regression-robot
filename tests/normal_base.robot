@@ -4,6 +4,7 @@ Resource    ../resources/retry_keywords.robot
 Resource    ../resources/global_setup.robot
 Library     ../resources/customer_info_generators.py
 Library     ../resources/answers.py
+Library     ../resources/verification_library.py
 Variables    ../scenarios.py
 Variables    ../vars.yaml
 Suite Setup    Global Suite Setup
@@ -34,14 +35,7 @@ Run Normal A02 P-Loan Did Not Satisfy Tcg Criteria Negative Scenario
     ${retry_interval}=    Set Variable    4s
     ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Rejected Status    ${session_id}    ${case_id}
 
-    ${loan_result_found}=    Set Variable    ${False}
-    FOR    ${item}    IN    @{case_detail['customer_data']}
-        IF    '${item['field_name']}' == 'thinker.loanResult' and '${item['value']}' == 'R07'
-            ${loan_result_found}=    Set Variable    ${True}
-            BREAK
-        END
-    END
-    Should Be True    ${loan_result_found}    Expected 'thinker.loanResult' with 'R07' value not found
+    Verify Customer Data Field    ${case_detail}    thinker.loanResult    R07   
     Log    Step B: Loan Result & Status verified.
 
 Run P-Loan R05 NCB Source NOT_TRUST and Invalid NCB Grade
@@ -57,14 +51,7 @@ Run P-Loan R05 NCB Source NOT_TRUST and Invalid NCB Grade
     ${retry_interval}=    Set Variable    4s
     ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Rejected Status    ${session_id}    ${case_id}
 
-    ${loan_result_found}=    Set Variable    ${False}
-    FOR    ${item}    IN    @{case_detail['customer_data']}
-        IF    '${item['field_name']}' == 'thinker.loanResult' and '${item['value']}' == 'R05'
-            ${loan_result_found}=    Set Variable    ${True}
-            BREAK
-        END
-    END
-    Should Be True    ${loan_result_found}    Expected 'thinker.loanResult' with 'R05' value not found
+    Verify Customer Data Field    ${case_detail}    thinker.loanResult    R05
     Log    Step B: Loan Result & Status verified.
 
 Run Nano-Loan R05 NCB Source NOT_TRUST and Invalid NCB Grade
@@ -80,14 +67,7 @@ Run Nano-Loan R05 NCB Source NOT_TRUST and Invalid NCB Grade
     ${retry_interval}=    Set Variable    4s
     ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Rejected Status    ${session_id}    ${case_id}
 
-    ${loan_result_found}=    Set Variable    ${False}
-    FOR    ${item}    IN    @{case_detail['customer_data']}
-        IF    '${item['field_name']}' == 'thinker.loanResult' and '${item['value']}' == 'R05'
-            ${loan_result_found}=    Set Variable    ${True}
-            BREAK
-        END
-    END
-    Should Be True    ${loan_result_found}    Expected 'thinker.loanResult' with 'R05' value not found
+    Verify Customer Data Field    ${case_detail}    thinker.loanResult    R05
     Log    Step B: Loan Result & Status verified.
 
 ***Keywords***
@@ -103,52 +83,14 @@ Normal Workflow
     Log    7.1: CA case claimed.
 
     ${expected_task_substrings}=    Set Variable    ${scenario['expected']['task_name_substrings']['ca']}
-    FOR    ${expected_substring}    IN    @{expected_task_substrings}
-        ${found_task}=    Set Variable    ${False}
-        FOR    ${task}    IN    @{claimed_tasks_data}
-            IF    '${expected_substring}' in '${task['task_method_name']}'
-                ${found_task}=    Set Variable    ${True}
-                BREAK
-            END
-        END
-        Should Be True    ${found_task}    Expected task substring '${expected_substring}' not found
-    END
+    Verify Task Name Substrings    ${claimed_tasks_data}    ${expected_task_substrings}
     Log    7.1: CA tasks verified.
 
     Log    7.2: Verifying available escalation roles for CA...
     ${task_details}=    Get Task Details    ${session_id}    ${case_id}
-    FOR    ${task_id}    ${detail_data}    IN    &{task_details}
-        IF    'verifying_fields' in $detail_data and 'summary' in $detail_data['verification_method_name']
-            FOR    ${field_i}    IN    @{detail_data['verifying_fields']}
-                ${field}=    Set Variable    ${field_i['field']}
-                IF    '${field['field_name']}' == 'thinker.roleAssignment'
-                    ${choices}=    Set Variable    ${field['choices']}
-                    ${expected_must_have_roles}=    Set Variable    ${scenario['expected']['available_escalation_roles']['ca']}
-                    FOR    ${role}    IN    @{expected_must_have_roles}
-                        ${role_found}=    Set Variable    ${False}
-                        FOR    ${choice}    IN    @{choices}
-                            IF    '${choice['value']}' == '${role}'
-                                ${role_found}=    Set Variable    ${True}
-                                BREAK
-                            END
-                        END
-                        Should Be True    ${role_found}    Expected role '${role}' not found
-                    END
-                    ${expected_must_not_have_roles}=    Set Variable    ${scenario['expected']['unavailable_escalation_roles']['ca']}
-                    FOR    ${role}    IN    @{expected_must_not_have_roles}
-                        ${role_found}=    Set Variable    ${False}
-                        FOR    ${choice}    IN    @{choices}
-                            IF    '${choice['value']}' == '${role}'
-                                ${role_found}=    Set Variable    ${True}
-                                BREAK
-                            END
-                        END
-                        Should Not Be True    ${role_found}    Unexpected role '${role}' found
-                    END
-                END
-            END
-        END
-    END
+    ${expected_must_have_roles}=    Set Variable    ${scenario['expected']['available_escalation_roles']['ca']}
+    ${expected_must_not_have_roles}=    Set Variable    ${scenario['expected']['unavailable_escalation_roles']['ca']}
+    Verify Escalation Roles    ${task_details}    ${expected_must_have_roles}    ${expected_must_not_have_roles}
     Log    7.2: Escalation roles for CA verified.
 
     Log    7.3: Escalating CA Role to SCA...
@@ -193,38 +135,9 @@ Normal Workflow
 
     Log    8.2: Verifying available escalation roles for SCA...
     ${task_details}=    Get Task Details    ${session_id}    ${case_id}
-    FOR    ${task_id}    ${detail_data}    IN    &{task_details}
-        IF    'verifying_fields' in $detail_data and 'summary' in $detail_data['verification_method_name']
-            FOR    ${field_i}    IN    @{detail_data['verifying_fields']}
-                ${field}=    Set Variable    ${field_i['field']}
-                IF    '${field['field_name']}' == 'thinker.roleAssignment'
-                    ${choices}=    Set Variable    ${field['choices']}
-                    ${expected_roles}=    Set Variable    ${scenario['expected']['available_escalation_roles']['sca']}
-                    FOR    ${role}    IN    @{expected_roles}
-                        ${role_found}=    Set Variable    ${False}
-                        FOR    ${choice}    IN    @{choices}
-                            IF    '${choice['value']}' == '${role}'
-                                ${role_found}=    Set Variable    ${True}
-                                BREAK
-                            END
-                        END
-                        Should Be True    ${role_found}    Expected role '${role}' not found
-                    END
-                    ${expected_must_not_have_roles}=    Set Variable    ${scenario['expected']['unavailable_escalation_roles']['sca']}
-                    FOR    ${role}    IN    @{expected_must_not_have_roles}
-                        ${role_found}=    Set Variable    ${False}
-                        FOR    ${choice}    IN    @{choices}
-                            IF    '${choice['value']}' == '${role}'
-                                ${role_found}=    Set Variable    ${True}
-                                BREAK
-                            END
-                        END
-                        Should Not Be True    ${role_found}    Unexpected role '${role}' found
-                    END
-                END
-            END
-        END
-    END
+    ${expected_roles}=    Set Variable    ${scenario['expected']['available_escalation_roles']['sca']}
+    ${expected_must_not_have_roles}=    Set Variable    ${scenario['expected']['unavailable_escalation_roles']['sca']}
+    Verify Escalation Roles    ${task_details}    ${expected_roles}    ${expected_must_not_have_roles}
     Log    8.2: Available escalation roles verified.
 
     Log    8.3: Verifying SCA tasks...
@@ -261,50 +174,13 @@ Normal Workflow
     Should Be True    ${claimed_tasks_data_length} > 0    claimed_tasks_data should not be empty
 
     ${expected_task_substrings}=    Set Variable    ${scenario['expected']['task_name_substrings']['md']}
-    FOR    ${expected_substring}    IN    @{expected_task_substrings}
-        ${found_task}=    Set Variable    ${False}
-        FOR    ${task}    IN    @{claimed_tasks_data}
-            IF    '${expected_substring}' in '${task['task_method_name']}'
-                ${found_task}=    Set Variable    ${True}
-                BREAK
-            END
-        END
-        Should Be True    ${found_task}    Expected task substring '${expected_substring}' not found
-    END
+    Verify Task Name Substrings    ${claimed_tasks_data}    ${expected_task_substrings}
 
     ${task_details}=    Get Task Details    ${session_id}    ${case_id}
-    FOR    ${task_id}    ${detail_data}    IN    &{task_details}
-        IF    'verifying_fields' in $detail_data and 'summary' in $detail_data['verification_method_name']
-            FOR    ${field_i}    IN    @{detail_data['verifying_fields']}
-                ${field}=    Set Variable    ${field_i['field']}
-                IF    '${field['field_name']}' == 'thinker.roleAssignment'
-                    ${choices}=    Set Variable    ${field['choices']}
-                    ${expected_roles}=    Set Variable    ${scenario['expected']['available_escalation_roles']['md']}
-                    FOR    ${role}    IN    @{expected_roles}
-                        ${role_found}=    Set Variable    ${False}
-                        FOR    ${choice}    IN    @{choices}
-                            IF    '${choice['value']}' == '${role}'
-                                ${role_found}=    Set Variable    ${True}
-                                BREAK
-                            END
-                        END
-                        Should Be True    ${role_found}    Expected role '${role}' not found
-                    END
-                    ${expected_must_not_have_roles}=    Set Variable    ${scenario['expected']['unavailable_escalation_roles']['md']}
-                    FOR    ${role}    IN    @{expected_must_not_have_roles}
-                        ${role_found}=    Set Variable    ${False}
-                        FOR    ${choice}    IN    @{choices}
-                            IF    '${choice['value']}' == '${role}'
-                                ${role_found}=    Set Variable    ${True}
-                                BREAK
-                            END
-                        END
-                        Should Not Be True    ${role_found}    Unexpected role '${role}' found
-                    END
-                END
-            END
-        END
-    END
+
+    ${expected_roles}=    Set Variable    ${scenario['expected']['available_escalation_roles']['md']}
+    ${expected_must_not_have_roles}=    Set Variable    ${scenario['expected']['unavailable_escalation_roles']['md']}
+    Verify Escalation Roles    ${task_details}    ${expected_roles}    ${expected_must_not_have_roles}
 
     Release Case    ${session_id}    ${case_id}
     Claim Case    ${session_id}    ${case_id}
@@ -381,23 +257,8 @@ Initial Normal Workflow
     ${retry_interval}=    Set Variable    7s
     ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check CA Decision Unknown    ${session_id}    ${case_id}
 
-    ${loan_status_found}=    Set Variable    ${False}
-    FOR    ${item}    IN    @{case_detail['customer_data']}
-        IF    '${item['field_name']}' == 'thinker.loanStatus' and '${item['value']}' == 'VERIFYING'
-            ${loan_status_found}=    Set Variable    ${True}
-            BREAK
-        END
-    END
-    Should Be True    ${loan_status_found}    Expected 'thinker.loanStatus' with 'VERIFYING' value not found
-
-    ${is_found_success_loan_corrected}=    Set Variable    ${False}
-    FOR    ${item}    IN    @{case_detail['customer_data']}
-        IF    $item['field_name'] == '_customerInfo.foundSuccessLoan' and $item['value'] == $scenario['expected']['found_success_loan']
-            ${is_found_success_loan_corrected}=    Set Variable    ${True}
-            BREAK
-        END
-    END
-    Should Be True    ${is_found_success_loan_corrected}    Expected '_customerInfo.foundSuccessLoan' with '${scenario['expected']['found_success_loan']}' value not found or not matched
+    Verify Customer Data Field    ${case_detail}    thinker.loanStatus    VERIFYING
+    Verify Customer Data Field    ${case_detail}    _customerInfo.foundSuccessLoan    ${scenario['expected']['found_success_loan']}
 
     Run Keyword If    ${is_new_customer} == ${False}    Check Available Credit Limit    ${session_id}    ${case_id}    ${scenario['available_credit_limit_name']}    ${scenario['expected']['available_credit_limit']}
 

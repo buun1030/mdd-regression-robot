@@ -2042,11 +2042,6 @@ GSB_LEAD_P_LOAN_BASE_ANSWERS = {
         },
         {
             "source": "customer",
-            "field_name": "_customerInfo.nationalIdNumber",
-            "field_value": "1200100436999"
-        },
-        {
-            "source": "customer",
             "field_name": "_customerInfo.titleName",
             "field_value": "2101"
         },
@@ -2355,11 +2350,6 @@ GSB_LEAD_NANO_LOAN_BASE_ANSWERS = {
             "source": "customer",
             "field_name": "_loan.requestDate",
             "field_value": "1726630409"
-        },
-        {
-            "source": "customer",
-            "field_name": "_customerInfo.nationalIdNumber",
-            "field_value": "1200100436999"
         },
         {
             "source": "customer",
@@ -3331,3 +3321,201 @@ GSB_LEAD_NANO_LOAN_BASE_SCENARIO = {
         "loan_result": "A01"
     }
 }
+
+GSB_LEAD_P_LOAN_CALC_CASES = [
+    {
+        "case_name": "P-Loan Risk 10 (Canceled)",
+        "inputs": {"_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "20000", "_occupation.gsbRegSalaryAmount": "20000", "_occupation.gsbIncomeTotalAmount": "20000"},
+        "expected": {"thinker.loanStatus": "CANCELED"}
+    },
+    {
+        "case_name": "P-Loan Risk 11 (Canceled)",
+        "inputs": {"_gsb.riskLevel": "11", "_occupation.gsbRegIncomeTotalAmount": "20000", "_occupation.gsbRegSalaryAmount": "20000", "_occupation.gsbIncomeTotalAmount": "20000"},
+        "expected": {"thinker.loanStatus": "CANCELED"}
+    },
+    {
+        "case_name": "P-Loan Risk 12 (Canceled)",
+        "inputs": {"_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "20000", "_occupation.gsbRegSalaryAmount": "20000", "_occupation.gsbIncomeTotalAmount": "20000"},
+        "expected": {"thinker.loanStatus": "CANCELED"}
+    },
+    {
+        "case_name": "P-Loan Risk 10 (Pre-Approved)",
+        "inputs": {"_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "30000", "_occupation.gsbRegSalaryAmount": "30000", "_occupation.gsbIncomeTotalAmount": "30000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "60000", "_loan.gsbLeadMaxPLoanPolicyLimit": "50000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "50000", 
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "50000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "50000",
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "50000", 
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "50000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "P-Loan Risk 11 (Pre-Approved)",
+        "inputs": {"_gsb.riskLevel": "11", "_occupation.gsbRegIncomeTotalAmount": "30000", "_occupation.gsbRegSalaryAmount": "30000", "_occupation.gsbIncomeTotalAmount": "30000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "60000", "_loan.gsbLeadMaxPLoanPolicyLimit": "50000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "50000", 
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "50000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "50000",
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "50000", 
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "50000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "P-Loan Risk 12 (Pre-Approved)",
+        "inputs": {"_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "30000", "_occupation.gsbRegSalaryAmount": "30000", "_occupation.gsbIncomeTotalAmount": "30000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "30000", "_loan.gsbLeadMaxPLoanPolicyLimit": "50000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "30000", 
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "30000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "30000",
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "30000", 
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "30000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    }
+]
+
+GSB_LEAD_NANO_LOAN_CALC_CASES = [
+    {
+        "case_name": "Nano-Loan Risk 10 (Canceled)",
+        "inputs": {"_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "9000", "_occupation.gsbRegSalaryAmount": "9000", "_occupation.gsbIncomeTotalAmount": "9000"},
+        "expected": {"thinker.loanStatus": "CANCELED"}
+    },
+    {
+        "case_name": "Nano-Loan Risk 11 (Canceled)",
+        "inputs": {"_gsb.riskLevel": "11", "_occupation.gsbRegIncomeTotalAmount": "9000", "_occupation.gsbRegSalaryAmount": "9000", "_occupation.gsbIncomeTotalAmount": "9000"},
+        "expected": {"thinker.loanStatus": "CANCELED"}
+    },
+    {
+        "case_name": "Nano-Loan Risk 12 (Canceled)",
+        "inputs": {"_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "9000", "_occupation.gsbRegSalaryAmount": "9000", "_occupation.gsbIncomeTotalAmount": "9000"},
+        "expected": {"thinker.loanStatus": "CANCELED"}
+    },
+    {
+        "case_name": "Nano-Loan Risk 10 (Pre-Approved 15k)",
+        "inputs": {"_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "10000", "_occupation.gsbRegSalaryAmount": "10000", "_occupation.gsbIncomeTotalAmount": "10000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "15000", "_loan.gsbLeadMaxNanoLoanPolicyLimit": "40000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "15000", 
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "15000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "15000",
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "15000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "15000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "Nano-Loan Risk 11 (Pre-Approved 12k)",
+        "inputs": {"_gsb.riskLevel": "11", "_occupation.gsbRegIncomeTotalAmount": "10000", "_occupation.gsbRegSalaryAmount": "10000", "_occupation.gsbIncomeTotalAmount": "10000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "12000", "_loan.gsbLeadMaxNanoLoanPolicyLimit": "35000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "12000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "12000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "12000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "12000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "12000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "Nano-Loan Risk 12 (Pre-Approved 10k)",
+        "inputs": {"_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "10000", "_occupation.gsbRegSalaryAmount": "10000", "_occupation.gsbIncomeTotalAmount": "10000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "10000", "_loan.gsbLeadMaxNanoLoanPolicyLimit": "30000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "10000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "10000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "10000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "10000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "10000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "Nano-Loan Risk 10 (Pre-Approved 50k)",
+        "inputs": {"_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "100000", "_loan.gsbLeadMaxNanoLoanPolicyLimit": "50000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "50000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "50000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "50000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "50000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "50000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "Nano-Loan Risk 11 (Pre-Approved 50k)",
+        "inputs": {"_gsb.riskLevel": "11", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "100000", "_loan.gsbLeadMaxNanoLoanPolicyLimit": "50000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "50000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "50000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "50000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "50000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "50000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "Nano-Loan Risk 12 (Pre-Approved 40k)",
+        "inputs": {"_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "50000", "_loan.gsbLeadMaxNanoLoanPolicyLimit": "40000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "40000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "40000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "40000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "40000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "40000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    }
+]
