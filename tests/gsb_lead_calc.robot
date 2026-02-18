@@ -42,12 +42,12 @@ Execute Calculation Test Case
     
     ${session_id}    ${case_id}=    Initial GSB Lead Workflow    ${base_scenario}
 
-    ${risk_income_answers}=    Build Gsb Risk And Income Answer    ${test_data['inputs']}
+    ${risk_income_answers}=    Build Answer    ${test_data['inputs']}
     Answer Questions    ${session_id}    ${case_id}    ${risk_income_answers}
 
     Sleep    3s
-
     ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}
+    
     Verify Multiple Customer Data Fields    ${case_detail}    ${test_data['expected']}
 
     Log    ✅ Case '${test_data['case_name']}' Passed!    console=${True}

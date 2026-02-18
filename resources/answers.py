@@ -21,7 +21,7 @@ def build_ncb_not_trust_and_invalid_grade_answer():
         }
     ]
 
-def build_gsb_risk_and_income_answer(inputs_dict):
+def build_answer(inputs_dict):
     """
     แปลง Dictionary input เช่น {'_gsb.riskLevel': 10} 
     ให้เป็น List of Answer Format ของ Thinker API
