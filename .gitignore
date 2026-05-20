@@ -1,15 +1,21 @@
 __pycache__/
+*.pyc
+
+venv/
+.vscode/
+.DS_Store
+
 vars.yaml
 
-result/*
-pabot_results
-
-.vscode
+# Robot Framework / pabot output artifacts
 log.html
-output.xml
 report.html
+output.xml
+*.html
+*.xml
 .pabotsuitenames
-pabot_results/0/robot_stderr.out
-pabot_results/0/robot_stdout.out
+pabot_results/
+results/
+interactive_console_output.xml
 
 *.png
