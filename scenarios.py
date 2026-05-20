@@ -6,6 +6,11 @@ valid_base64_content = "[\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAE
 
 NORMAL_P_LOAN_BASE_ANSWERS = {
     "initial_questions": [
+        # {
+        #     "field_name": "_gsb.aScoreGrade",
+        #     "field_value": "A",
+        #     "source": "customer"
+        # },
         {
             "field_name": "_loan.loanApplicationNumber",
             "field_value": "normal_a02_p_loan_new_customer",
@@ -934,6 +939,11 @@ NORMAL_P_LOAN_BASE_ANSWERS = {
 
 NORMAL_NANO_LOAN_BASE_ANSWERS = {
     "initial_questions": [
+        # {
+        #     "field_name": "_gsb.aScoreGrade",
+        #     "field_value": "A",
+        #     "source": "customer"
+        # },
         {
             "field_name": "_loan.loanApplicationNumber",
             "field_value": "normal_a02_nano_loan_new_customer",
@@ -1141,7 +1151,7 @@ NORMAL_NANO_LOAN_BASE_ANSWERS = {
         },
         {
             "field_name": "_loan.loanRequest",
-            "field_value": "60000",
+            "field_value": "110000",
             "source": "customer"
         },
         {
@@ -2988,223 +2998,6 @@ NORMAL_NANO_LOAN_OLD_CUSTOMER_TERM_WITH_EXISTING_REVOLVING_SCENARIO = {
     }
 }
 
-# NORMAL_P_LOAN_CREDIT_LIMIT_TEST_CASES = {
-#     "test_id": "normal_p_loan_credit_limit",
-#     "product_name": "moneydd.pLoan",
-#     "answers": NORMAL_P_LOAN_BASE_ANSWERS,
-#     "cases": [
-#         {
-#             "answers": [
-#                 {"field_name": "scheduleSettings.repaymentInstallments", "field_value": "24", "source": "customer"},
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"30000\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "50000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "50000", "minimum": "5000"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "1100000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"30000\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "1000000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "1000000", "minimum": "5000"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "6000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"0\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "9000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "9000", "minimum": "5000"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "5400", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"4730\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "8000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "-1", "minimum": "-1"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"664900\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "FOUND", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanTermLoanLimit", "field_value": "985000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanTermLoanRepayment", "field_value": "30000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanRevolvingLoanLimit", "field_value": "20000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanAmount", "field_value": "985000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanRepayment", "field_value": "30000", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoLoanAmount", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
-#                 {"field_name": "_credit.dayPastDue", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"},
-#                 {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "-1", "minimum": "-1"},
-#                 "term_credit_limit": {"maximum": "-1", "minimum": "-1"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"30000\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "FOUND", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanTermLoanLimit", "field_value": "985000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanTermLoanRepayment", "field_value": "30000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanRevolvingLoanLimit", "field_value": "20000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanAmount", "field_value": "985000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanRepayment", "field_value": "30000", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoLoanAmount", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
-#                 {"field_name": "_credit.dayPastDue", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"},
-#                 {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "25000", "minimum": "5000"}
-#             }
-#         }
-#     ]
-# }
-
-# NORMAL_NANO_LOAN_CREDIT_LIMIT_TEST_CASES = {
-#     "test_id": "normal_nano_loan_credit_limit",
-#     "product_name": "moneydd.nanoLoan",
-#     "answers": NORMAL_NANO_LOAN_BASE_ANSWERS,
-#     "cases": [
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "70000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"30000\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "70000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "70000", "minimum": "5000"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "110000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"30000\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "100000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "100000", "minimum": "5000"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "6000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"0\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "9000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "9000", "minimum": "5000"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "5400", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"4730\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "8000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "-1", "minimum": "-1"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"664900\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "NOT_FOUND", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "-1", "minimum": "-1"},
-#                 "term_credit_limit": {"maximum": "-1", "minimum": "-1"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "50000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"30000\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "FOUND", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoTermLoanLimit", "field_value": "85000", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoTermLoanRepayment", "field_value": "30000", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoRevolvingLoanLimit", "field_value": "20000", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoLoanAmount", "field_value": "85000", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "30000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanAmount", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanRepayment", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
-#                 {"field_name": "_credit.dayPastDue", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"},
-#                 {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "25000", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "25000", "minimum": "5000"}
-#             }
-#         },
-#         {
-#             "answers": [
-#                 {"field_name": "_loan.loanRequest", "field_value": "100000", "source": "customer"},
-#                 {"field_name": "_occupation.incomeAmount", "field_value": "700000", "source": "customer"},
-#                 {"field_name": "_credit.tadsResult.ncbDebtInstallment", "field_value": "[\"0\",\"0\",\"0\",\"0\",\"4268\",\"0\",\"10778\",\"0\",\"0\",\"0\",\"0\",\"0\",\"1906\",\"1213\",\"934.7\"]", "source": "customer"},
-#                 {"field_name": "_customerInfo.foundSuccessLoan", "field_value": "FOUND", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoTermLoanLimit", "field_value": "21100", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoTermLoanRepayment", "field_value": "4000", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoRevolvingLoanLimit", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoLoanAmount", "field_value": "21100", "source": "customer"},
-#                 {"field_name": "_credit.totalNanoLoanRepayment", "field_value": "4000", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanAmount", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.totalPLoanRepayment", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.firstBookDate", "field_value": "1720577167", "source": "customer"},
-#                 {"field_name": "_credit.dayPastDue", "field_value": "0", "source": "customer"},
-#                 {"field_name": "_credit.existingCreditAmount", "field_value": "10000", "source": "customer"},
-#                 {"field_name": "_credit.loanActiveAccount", "field_value": "[\"0201\"]", "source": "customer"}
-#             ],
-#             "expected": {
-#                 "revolving_credit_limit": {"maximum": "82900", "minimum": "5000"},
-#                 "term_credit_limit": {"maximum": "82900", "minimum": "5000"}
-#             }
-#         }
-#     ]
-# }
-
 NORMAL_LOAN_TYPE_TEST_CASES = {
     "test_id": "normal_p_loan_loan_type",
     "product_name": "moneydd.pLoan",
@@ -3584,9 +3377,9 @@ NORMAL_P_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "9000",
             "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "9000",
             "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "9000", 
-            "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "9000",
-            "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "9000",
-            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "9000",
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
             "thinker.loanStatus": "VERIFYING"
         }
     },
@@ -3603,10 +3396,10 @@ NORMAL_P_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "8000",
             "_loan.1.rangeMinimumLimit": "-1", "_loan.1.rangeMaximumLimit": "-1",
             "_loan.2.rangeMinimumLimit": "-1", "_loan.2.rangeMaximumLimit": "-1", 
-            "_loan.3.rangeMinimumLimit": "-1", "_loan.3.rangeMaximumLimit": "-1",
-            "_loan.4.rangeMinimumLimit": "-1", "_loan.4.rangeMaximumLimit": "-1",
-            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
-            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "6200",
+            "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "7900",
+            "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "8100",
+            "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "8100", 
             "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
             "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
             "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
@@ -3614,7 +3407,7 @@ NORMAL_P_LOAN_CREDIT_LIMIT_CASES = [
         }
     },
     {
-        "case_name": "P-Loan Old Customer Req 50k (Verifying -1)",
+        "case_name": "P-Loan Old Customer Req 50k (Rejected -1)",
         "inputs": {
             "scheduleSettings.repaymentInstallments": "24",
             "_loan.loanRequest": "50000",
@@ -3628,7 +3421,7 @@ NORMAL_P_LOAN_CREDIT_LIMIT_CASES = [
             "_credit.firstBookDate": "1720577167",
             "_credit.dayPastDue": "0",
             "_credit.existingCreditAmount": "10000",
-            "_credit.loanActiveAccount": "\"0101\"]"
+            "_credit.loanActiveAccount": "[\"0101\"]"
         },
         "expected": {
             "_loan.revolvingMinimumLimit": "-1", "_loan.revolvingMaximumLimit": "-1",
@@ -3641,7 +3434,7 @@ NORMAL_P_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
             "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
             "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
-            "thinker.loanStatus": "VERIFYING"
+            "thinker.loanStatus": "REJECTED"
         }
     },
     {
@@ -3659,7 +3452,7 @@ NORMAL_P_LOAN_CREDIT_LIMIT_CASES = [
             "_credit.firstBookDate": "1720577167",
             "_credit.dayPastDue": "0",
             "_credit.existingCreditAmount": "10000",
-            "_credit.loanActiveAccount": "\"0101\"]"
+            "_credit.loanActiveAccount": "[\"0101\"]"
         },
         "expected": {
             "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "25000",
@@ -3671,7 +3464,7 @@ NORMAL_P_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "25000", 
             "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "25000",
             "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "25000",
-            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "25000",
+            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "-1",
             "thinker.loanStatus": "VERIFYING"
         }
     }
@@ -3741,9 +3534,9 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "9000",
             "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "9000",
             "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "9000", 
-            "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "9000",
-            "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "9000",
-            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "9000",
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
             "thinker.loanStatus": "VERIFYING"
         }
     },
@@ -3760,10 +3553,10 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "8000",
             "_loan.1.rangeMinimumLimit": "-1", "_loan.1.rangeMaximumLimit": "-1",
             "_loan.2.rangeMinimumLimit": "-1", "_loan.2.rangeMaximumLimit": "-1", 
-            "_loan.3.rangeMinimumLimit": "-1", "_loan.3.rangeMaximumLimit": "-1",
-            "_loan.4.rangeMinimumLimit": "-1", "_loan.4.rangeMaximumLimit": "-1",
-            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
-            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "5700",
+            "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "7200",
+            "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "8100",
+            "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "8100", 
             "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
             "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
             "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
@@ -3771,7 +3564,7 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_CASES = [
         }
     },
     {
-        "case_name": "Nano-Loan Req 50k (Verifying -1)",
+        "case_name": "Nano-Loan Req 50k (Rejected -1)",
         "inputs": {
             "scheduleSettings.repaymentInstallments": "24",
             "_loan.loanRequest": "50000",
@@ -3790,7 +3583,7 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
             "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
             "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
-            "thinker.loanStatus": "VERIFYING"
+            "thinker.loanStatus": "REJECTED"
         }
     },
     {
@@ -3808,7 +3601,7 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_CASES = [
             "_credit.firstBookDate": "1720577167",
             "_credit.dayPastDue": "0",
             "_credit.existingCreditAmount": "10000",
-            "_credit.loanActiveAccount": "\"0201\"]"
+            "_credit.loanActiveAccount": "[\"0201\"]"
         },
         "expected": {
             "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "25000",
@@ -3820,7 +3613,7 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "25000", 
             "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "25000",
             "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "25000",
-            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "25000",
+            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "-1",
             "thinker.loanStatus": "VERIFYING"
         }
     },
@@ -3839,7 +3632,7 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_CASES = [
             "_credit.firstBookDate": "1720577167",
             "_credit.dayPastDue": "0",
             "_credit.existingCreditAmount": "10000",
-            "_credit.loanActiveAccount": "\"0201\"]"
+            "_credit.loanActiveAccount": "[\"0201\"]"
         },
         "expected": {
             "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "82900",
@@ -3853,6 +3646,165 @@ NORMAL_NANO_LOAN_CREDIT_LIMIT_CASES = [
             "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "82900",
             "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "82900",
             "thinker.loanStatus": "VERIFYING"
+        }
+    }
+]
+
+# =================================================================
+# GSB LEAD: SECOND LOAN AUTO APPROVE SCENARIOS
+# =================================================================
+
+GSB_LEAD_SECOND_P_LOAN_CALC_CASES = [
+    {
+        "case_name": "2nd P-Loan: Income < 10K (Auto Cancel)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "9999", "_occupation.gsbRegSalaryAmount": "9999", "_occupation.gsbIncomeTotalAmount": "9999"},
+        "expected": {"thinker.loanStatus": "CANCELED"}
+    },
+    {
+        "case_name": "2nd P-Loan: Income 20K, Risk 10 (x1.5, Max Cap 40K -> Pre-Approve 30K)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "20000", "_occupation.gsbRegSalaryAmount": "20000", "_occupation.gsbIncomeTotalAmount": "20000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "30000", 
+            "_loan.gsbLeadMaxPLoanPolicyLimit": "40000",
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "30000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "30000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "30000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "30000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "30000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "2nd P-Loan: Income 20K, Risk 11 (x1.2, Max Cap 35K -> Pre-Approve 24K)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "11", "_occupation.gsbRegIncomeTotalAmount": "20000", "_occupation.gsbRegSalaryAmount": "20000", "_occupation.gsbIncomeTotalAmount": "20000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "24000",
+            "_loan.gsbLeadMaxPLoanPolicyLimit": "35000",
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "24000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "24000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "24000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "24000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "24000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "2nd P-Loan: Income 29K, Risk 10 (x1.5, Hit Max Cap 40K -> Pre-Approve 40K)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "29000", "_occupation.gsbRegSalaryAmount": "29000", "_occupation.gsbIncomeTotalAmount": "29000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "43500", 
+            "_loan.gsbLeadMaxPLoanPolicyLimit": "40000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "40000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "40000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "40000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "40000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "40000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "2nd P-Loan: Income 30K, Risk 10 (x2.0, Pre-Cap 60K > 50K -> Sent to Normal)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "30000", "_occupation.gsbRegSalaryAmount": "30000", "_occupation.gsbIncomeTotalAmount": "30000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "60000", 
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "60000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "60000", 
+            "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "60000",
+            "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "60000",
+            "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "60000",
+            "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "60000", 
+            "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "60000",
+            "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "60000",
+            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "60000",
+            "thinker.loanStatus": "VERIFYING",
+            "_loan.campaign": "normal"
+        }
+    },
+    {
+        "case_name": "2nd P-Loan: Income 50K, Risk 12 (x1.0, Pre-Cap 50K <= 50K -> Pre-Approve 50K)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "50000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "50000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "50000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "50000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "50000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "50000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "2nd P-Loan: Income 55000, Risk 12 (x1.0, Pre-Cap 55000 > 50K -> Sent to Normal)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "55000", "_occupation.gsbRegSalaryAmount": "55000", "_occupation.gsbIncomeTotalAmount": "55000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "55000", 
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "55000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "55000", 
+            "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "55000",
+            "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "55000",
+            "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "55000",
+            "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "55000", 
+            "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "55000",
+            "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "55000",
+            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "55000",
+            "thinker.loanStatus": "VERIFYING",
+            "_loan.campaign": "normal"
+        }
+    }
+]
+
+GSB_LEAD_SECOND_NANO_LOAN_CALC_CASES = [
+    {
+        "case_name": "2nd Nano-Loan: Income < 10K (Auto Cancel)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "9999", "_occupation.gsbRegSalaryAmount": "9999", "_occupation.gsbIncomeTotalAmount": "9999"},
+        "expected": {"thinker.loanStatus": "CANCELED"}
+    },
+    {
+        "case_name": "2nd Nano-Loan: Income 10K, Risk 10 (Pre-Cap 15K <= 50K -> Pre-Approve)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "10000", "_occupation.gsbRegSalaryAmount": "10000", "_occupation.gsbIncomeTotalAmount": "10000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "15000", 
+            "_loan.gsbLeadMaxNanoLoanPolicyLimit": "40000", 
+            "thinker.loanStatus": "PRE-APPROVED"
+        }
+    },
+    {
+        "case_name": "2nd Nano-Loan: Income 50K, Risk 10 (Pre-Cap 100K > 50K -> Sent to Normal)",
+        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000"},
+        "expected": {
+            "_loan.multiplierCreditLimit": "100000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "100000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "100000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "100000", 
+            "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "100000",
+            "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "100000",
+            "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "100000",
+            "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "100000", 
+            "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "100000",
+            "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "100000",
+            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "100000",
+            "thinker.loanStatus": "VERIFYING",
+            "_loan.campaign": "normal"
         }
     }
 ]
