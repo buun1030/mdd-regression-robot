@@ -36,6 +36,12 @@ Then edit `vars.yaml` with the real values.
 
 ## Running the Tests
 
+> **⚠️ VPN required for Mambu-related tests**
+>
+> Any test that talks to Mambu (e.g. `Run Normal A02 P-Loan Base Scenario`, `Run Normal A02 Nano-Loan Base Scenario`, and any other scenario that creates/queries loan accounts in Mambu) requires the company VPN to be connected before you run it. Without VPN the Mambu API calls will hang or fail with connection/timeout errors.
+>
+> Connect to VPN first, then run the tests.
+
 You can run the tests in parallel using `pabot` or sequentially using `robot`.
 
 ### Parallel Execution (Recommended)
