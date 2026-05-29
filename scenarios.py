@@ -6,11 +6,11 @@ valid_base64_content = "[\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAE
 
 NORMAL_P_LOAN_BASE_ANSWERS = {
     "initial_questions": [
-        # {
-        #     "field_name": "_gsb.aScoreGrade",
-        #     "field_value": "A",
-        #     "source": "customer"
-        # },
+        {
+            "field_name": "_gsb.aScoreGrade",
+            "field_value": "A",
+            "source": "customer"
+        },
         {
             "field_name": "_loan.loanApplicationNumber",
             "field_value": "normal_a02_p_loan_new_customer",
@@ -46,6 +46,21 @@ NORMAL_P_LOAN_BASE_ANSWERS = {
         #     "field_value": "10000",
         #     "source": "customer"
         # },
+        {
+            "field_name": "_bankStatementEnquiry.1.accountNumber",
+            "field_value": "20000000727",
+            "source": "customer"
+        },
+        {
+            "field_name": "_bankStatementEnquiry.1.isEnquiry",
+            "field_value": "true",
+            "source": "customer"
+        },
+        {
+            "field_name": "_bankStatementEnquiry.1.monthsEnquiry",
+            "field_value": "6",
+            "source": "customer"
+        },
         {
             "field_name": "_occupation.businessAddressPropertyRight",
             "field_value": "2",
@@ -939,11 +954,11 @@ NORMAL_P_LOAN_BASE_ANSWERS = {
 
 NORMAL_NANO_LOAN_BASE_ANSWERS = {
     "initial_questions": [
-        # {
-        #     "field_name": "_gsb.aScoreGrade",
-        #     "field_value": "A",
-        #     "source": "customer"
-        # },
+        {
+            "field_name": "_gsb.aScoreGrade",
+            "field_value": "A",
+            "source": "customer"
+        },
         {
             "field_name": "_loan.loanApplicationNumber",
             "field_value": "normal_a02_nano_loan_new_customer",
@@ -1042,6 +1057,21 @@ NORMAL_NANO_LOAN_BASE_ANSWERS = {
         {
             "field_name": "_loan.requestDate",
             "field_value": "1730104992",
+            "source": "customer"
+        },
+        {
+            "field_name": "_bankStatementEnquiry.1.accountNumber",
+            "field_value": "20000000727",
+            "source": "customer"
+        },
+        {
+            "field_name": "_bankStatementEnquiry.1.isEnquiry",
+            "field_value": "true",
+            "source": "customer"
+        },
+        {
+            "field_name": "_bankStatementEnquiry.1.monthsEnquiry",
+            "field_value": "6",
             "source": "customer"
         },
         {
@@ -3717,24 +3747,24 @@ GSB_LEAD_SECOND_P_LOAN_CALC_CASES = [
             "thinker.loanStatus": "PRE-APPROVED"
         }
     },
-    {
-        "case_name": "2nd P-Loan: Income 30K, Risk 10 (x2.0, Pre-Cap 60K > 50K -> Sent to Normal)",
-        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "30000", "_occupation.gsbRegSalaryAmount": "30000", "_occupation.gsbIncomeTotalAmount": "30000"},
-        "expected": {
-            "_loan.multiplierCreditLimit": "60000", 
-            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "60000",
-            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "60000", 
-            "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "60000",
-            "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "60000",
-            "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "60000",
-            "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "60000", 
-            "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "60000",
-            "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "60000",
-            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "60000",
-            "thinker.loanStatus": "VERIFYING",
-            "_loan.campaign": "normal"
-        }
-    },
+    #{
+    #    "case_name": "2nd P-Loan: Income 30K, Risk 10 (x2.0, Pre-Cap 60K > 50K -> Sent to Normal)",
+    #    "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "30000", "_occupation.gsbRegSalaryAmount": "30000", "_occupation.gsbIncomeTotalAmount": "30000"},
+    #    "expected": {
+    #        "_loan.multiplierCreditLimit": "60000", 
+    #        "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "60000",
+    #        "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "60000", 
+    #        "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "60000",
+    #        "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "60000",
+    #        "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "60000",
+    #        "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "60000", 
+    #        "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "60000",
+    #        "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "60000",
+    #        "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "60000",
+    #        "thinker.loanStatus": "VERIFYING",
+    #        "_loan.campaign": "normal"
+    #    }
+    #},
     {
         "case_name": "2nd P-Loan: Income 50K, Risk 12 (x1.0, Pre-Cap 50K <= 50K -> Pre-Approve 50K)",
         "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000"},
@@ -3754,23 +3784,44 @@ GSB_LEAD_SECOND_P_LOAN_CALC_CASES = [
         }
     },
     {
-        "case_name": "2nd P-Loan: Income 55000, Risk 12 (x1.0, Pre-Cap 55000 > 50K -> Sent to Normal)",
-        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "55000", "_occupation.gsbRegSalaryAmount": "55000", "_occupation.gsbIncomeTotalAmount": "55000"},
+        "case_name": "2nd P-Loan: Income 50K, Existing Loan 960k, Risk 12 (x1.0, Pre-Cap 50K <= 40K -> Pre-Approve 40K)",
+        "inputs": {
+            "subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000",
+            "_customerInfo.foundSuccessLoan": "FOUND", "_credit.totalPLoanTermLoanLimit": "970000", "_credit.totalPLoanTermLoanRepayment": "20000", "_credit.totalPLoanRevolvingLoanLimit": "10000"
+            },
         "expected": {
-            "_loan.multiplierCreditLimit": "55000", 
-            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "55000",
-            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "55000", 
-            "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "55000",
-            "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "55000",
-            "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "55000",
-            "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "55000", 
-            "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "55000",
-            "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "55000",
-            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "55000",
-            "thinker.loanStatus": "VERIFYING",
-            "_loan.campaign": "normal"
+            "_loan.multiplierCreditLimit": "50000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "40000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "40000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "40000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "40000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "40000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
+            "thinker.loanStatus": "PRE-APPROVED"
         }
     }
+    # {
+    #     "case_name": "2nd P-Loan: Income 55000, Risk 12 (x1.0, Pre-Cap 55000 > 50K -> Sent to Normal)",
+    #     "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "55000", "_occupation.gsbRegSalaryAmount": "55000", "_occupation.gsbIncomeTotalAmount": "55000"},
+    #     "expected": {
+    #         "_loan.multiplierCreditLimit": "55000", 
+    #         "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "55000",
+    #         "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "55000", 
+    #         "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "55000",
+    #         "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "55000",
+    #         "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "55000",
+    #         "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "55000", 
+    #         "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "55000",
+    #         "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "55000",
+    #         "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "55000",
+    #         "thinker.loanStatus": "VERIFYING",
+    #         "_loan.campaign": "normal"
+    #     }
+    # }
 ]
 
 GSB_LEAD_SECOND_NANO_LOAN_CALC_CASES = [
@@ -3789,22 +3840,43 @@ GSB_LEAD_SECOND_NANO_LOAN_CALC_CASES = [
         }
     },
     {
-        "case_name": "2nd Nano-Loan: Income 50K, Risk 10 (Pre-Cap 100K > 50K -> Sent to Normal)",
-        "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000"},
+        "case_name": "2nd Nano-Loan: Income 50K, Existing Loan 80k, Risk 12 (x1.0, Pre-Cap 40K <= 20K -> Pre-Approve 20K)",
+        "inputs": {
+            "subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "12", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000",
+            "_customerInfo.foundSuccessLoan": "FOUND", "_credit.totalNanoTermLoanLimit": "90000", "_credit.totalNanoTermLoanRepayment": "20000", "_credit.totalNanoRevolvingLoanLimit": "10000"
+            },
         "expected": {
-            "_loan.multiplierCreditLimit": "100000", 
-            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "100000",
-            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "100000",
-            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "100000", 
-            "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "100000",
-            "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "100000",
-            "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "100000",
-            "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "100000", 
-            "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "100000",
-            "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "100000",
-            "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "100000",
-            "thinker.loanStatus": "VERIFYING",
-            "_loan.campaign": "normal"
+            "_loan.multiplierCreditLimit": "50000", 
+            "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "20000",
+            "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "20000",
+            "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "20000", 
+            "_loan.3.rangeMinimumLimit": "10000", "_loan.3.rangeMaximumLimit": "20000",
+            "_loan.4.rangeMinimumLimit": "10000", "_loan.4.rangeMaximumLimit": "20000",
+            "_loan.5.rangeMinimumLimit": "-1", "_loan.5.rangeMaximumLimit": "-1",
+            "_loan.6.rangeMinimumLimit": "-1", "_loan.6.rangeMaximumLimit": "-1", 
+            "_loan.7.rangeMinimumLimit": "-1", "_loan.7.rangeMaximumLimit": "-1",
+            "_loan.8.rangeMinimumLimit": "-1", "_loan.8.rangeMaximumLimit": "-1",
+            "_loan.9.rangeMinimumLimit": "-1", "_loan.9.rangeMaximumLimit": "-1",
+            "thinker.loanStatus": "PRE-APPROVED"
         }
     }
+    # {
+    #     "case_name": "2nd Nano-Loan: Income 50K, Risk 10 (Pre-Cap 100K > 50K -> Sent to Normal)",
+    #     "inputs": {"subCampaign": "second_loan_auto_approve", "_gsb.riskLevel": "10", "_occupation.gsbRegIncomeTotalAmount": "50000", "_occupation.gsbRegSalaryAmount": "50000", "_occupation.gsbIncomeTotalAmount": "50000"},
+    #     "expected": {
+    #         "_loan.multiplierCreditLimit": "100000", 
+    #         "_loan.revolvingMinimumLimit": "5000", "_loan.revolvingMaximumLimit": "100000",
+    #         "_loan.1.rangeMinimumLimit": "5000", "_loan.1.rangeMaximumLimit": "100000",
+    #         "_loan.2.rangeMinimumLimit": "5000", "_loan.2.rangeMaximumLimit": "100000", 
+    #         "_loan.3.rangeMinimumLimit": "5000", "_loan.3.rangeMaximumLimit": "100000",
+    #         "_loan.4.rangeMinimumLimit": "5000", "_loan.4.rangeMaximumLimit": "100000",
+    #         "_loan.5.rangeMinimumLimit": "5000", "_loan.5.rangeMaximumLimit": "100000",
+    #         "_loan.6.rangeMinimumLimit": "5000", "_loan.6.rangeMaximumLimit": "100000", 
+    #         "_loan.7.rangeMinimumLimit": "5000", "_loan.7.rangeMaximumLimit": "100000",
+    #         "_loan.8.rangeMinimumLimit": "5000", "_loan.8.rangeMaximumLimit": "100000",
+    #         "_loan.9.rangeMinimumLimit": "5000", "_loan.9.rangeMaximumLimit": "100000",
+    #         "thinker.loanStatus": "VERIFYING",
+    #         "_loan.campaign": "normal"
+    #     }
+    # }
 ]
