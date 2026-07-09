@@ -108,13 +108,19 @@ Get Task Details
     ${task_ids}=    Get Task Ids    ${session_id}    ${case_id}
     &{task_detail_map}=    Create Dictionary
     FOR    ${task_id}    IN    @{task_ids}
-        &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}
-        &{payload}=    Create Dictionary    task_id=${task_id}    all_task_mode=${False}
-        ${response}=    POST On Session    alias=thinker-session    url=/question-taskpool/api/v1/get-task-detail    json=${payload}    headers=${headers}
-        Status Should Be    200    ${response}
+        ${response}=    Wait Until Keyword Succeeds    5x    3s
+        ...    Post Get Task Detail    ${session_id}    ${task_id}
         Set To Dictionary    ${task_detail_map}    ${task_id}=${response.json()}[data]
     END
     RETURN    ${task_detail_map}
+
+Post Get Task Detail
+    [Arguments]    ${session_id}    ${task_id}
+    &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}
+    &{payload}=    Create Dictionary    task_id=${task_id}    all_task_mode=${False}
+    ${response}=    POST On Session    alias=thinker-session    url=/question-taskpool/api/v1/get-task-detail    json=${payload}    headers=${headers}
+    Status Should Be    200    ${response}
+    RETURN    ${response}
 
 Edit Task Data
     [Arguments]    ${session_id}    ${payload}
