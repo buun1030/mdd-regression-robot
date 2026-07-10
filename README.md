@@ -44,7 +44,7 @@ Then edit `vars.yaml` with the real values.
 
 You can run the tests in parallel using `pabot` or sequentially using `robot`.
 
-### Parallel Execution (Recommended)
+### Parallel Execution
 
 Run all tests in parallel:
 
@@ -52,7 +52,7 @@ Run all tests in parallel:
 pabot --testlevelsplit tests
 ```
 
-### Sequential Execution
+### Sequential Execution (Recommended)
 
 Run all tests sequentially (useful for debugging):
 
