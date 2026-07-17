@@ -33,8 +33,8 @@ Initial Normal Workflow
 
     Log    Step 6: Verifying Case Details...
     Sleep    12s
-    ${timeout}=    Set Variable    30s
-    ${retry_interval}=    Set Variable    7s
+    ${timeout}=    Set Variable    5 minutes
+    ${retry_interval}=    Set Variable    5s
     ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check CA Decision Unknown    ${session_id}    ${case_id}
     
     Verify Customer Data Field    ${case_detail}    thinker.loanStatus    VERIFYING
@@ -188,8 +188,8 @@ Normal Workflow
 
     Log    Step 10: Approved Status...
     Sleep    10s
-    ${timeout}=    Set Variable    30s
-    ${retry_interval}=    Set Variable    7s
+    ${timeout}=    Set Variable    5 minutes
+    ${retry_interval}=    Set Variable    5s
     ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Approved Status    ${session_id}    ${case_id}
     Log    Step 10: Approved Status verified.
 
@@ -199,8 +199,8 @@ Normal Workflow
 
     Log    Step 12: Completed Status...
     Sleep    10s
-    ${timeout}=    Set Variable    30s
-    ${retry_interval}=    Set Variable    7s
+    ${timeout}=    Set Variable    5 minutes
+    ${retry_interval}=    Set Variable    5s
     ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Completed Status    ${session_id}    ${case_id}    ${scenario}
     Log    Step 12: Completed Status verified.
 

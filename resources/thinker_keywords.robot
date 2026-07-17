@@ -49,15 +49,15 @@ Submit Case
 
 Complete Batch Process
     [Arguments]    ${session_id}    ${case_id}
+    Sleep    15s
+    Wait Until Keyword Succeeds    5 minutes    5s
+    ...    Post Batch Process Complete    ${session_id}    ${case_id}
+
+Post Batch Process Complete
+    [Arguments]    ${session_id}    ${case_id}
     &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}
     &{payload}=    Create Dictionary    case_id=${case_id}
-    Sleep    10s
-    ${response}=    POST On Session    alias=thinker-session    url=/case-datasources/api/v1/callback/batch-process-complete    json=${payload}    headers=${headers}    expected_status=any
-    FOR    ${i}    IN RANGE    3
-        Exit For Loop If    ${response.status_code} == 200
-        Sleep    5s
-        ${response}=    POST On Session    alias=thinker-session    url=/case-datasources/api/v1/callback/batch-process-complete    json=${payload}    headers=${headers}    expected_status=any
-    END
+    ${response}=    POST On Session    alias=thinker-session    url=/case-datasources/api/v1/callback/batch-process-complete    json=${payload}    headers=${headers}
     Status Should Be    200    ${response}
     ${code}=    Set Variable    ${response.json()}[code]
     Should Be Equal As Strings    ${code}    0

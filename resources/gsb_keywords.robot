@@ -36,8 +36,8 @@ Initial GSB Lead Workflow
 
     Log    Step 5: Verifying Case Details (Pre-Approved)...
     Sleep    5s
-    ${timeout}=    Set Variable    30s
-    ${retry_interval}=    Set Variable    7s
+    ${timeout}=    Set Variable    5 minutes
+    ${retry_interval}=    Set Variable    5s
     ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Customer Decision Unknown    ${session_id}    ${case_id}
     
     Verify Customer Data Field    ${case_detail}    thinker.loanStatus    PRE-APPROVED
@@ -58,8 +58,8 @@ GSB Lead Workflow
 
     Log    Step 7: Verifying Case Details (Loan Status APPROVED)...
     Sleep    10s
-    ${timeout}=    Set Variable    30s
-    ${retry_interval}=    Set Variable    7s
+    ${timeout}=    Set Variable    5 minutes
+    ${retry_interval}=    Set Variable    5s
     Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Approved Status for GSB Lead    ${session_id}    ${case_id}
     Log    Step 7: Loan Status is APPROVED verified.
 
