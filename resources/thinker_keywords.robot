@@ -81,6 +81,14 @@ Claim Case
     Should Be Equal As Integers    ${code}    0
     RETURN    ${response.json()}[data]
 
+Call Triggering Module Sync
+    [Arguments]    ${session_id}    ${case_id}    ${task_id}    ${field_name}    ${triggering_module_name}    ${reference_key}=${EMPTY}
+    &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}
+    &{payload}=    Create Dictionary    case_id=${case_id}    task_id=${task_id}    field_name=${field_name}    triggering_module_name=${triggering_module_name}    reference_key=${reference_key}
+    ${response}=    POST On Session    alias=thinker-session    url=/question-taskpool/api/v1/call-triggering-module-sync    json=${payload}    headers=${headers}
+    Status Should Be    200    ${response}
+    RETURN    ${response}
+
 Release Case
     [Arguments]    ${session_id}    ${case_id}
     &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}

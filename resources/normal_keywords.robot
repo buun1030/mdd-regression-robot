@@ -59,7 +59,17 @@ Normal Workflow
     ${claimed_tasks_data}=    Claim Case    ${session_id}    ${case_id}
     ${expected_task_substrings}=    Set Variable    ${scenario['expected']['task_name_substrings']['ca']}
     Verify Task Name Substrings    ${claimed_tasks_data}    ${expected_task_substrings}
-    
+
+    Log    7.1.5: Triggering submit.aScore module...
+    ${trigger_task_id}=    Find Task Id By Method Substring    ${claimed_tasks_data}    aScore
+    Call Triggering Module Sync    ${session_id}    ${case_id}    ${trigger_task_id}    thinker.isManualAScoreSuccess    submit.aScore
+    Sleep    5s
+    ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}
+    Verify Customer Data Field    ${case_detail}    thinker.isManualAScoreSuccess    true
+    Verify Customer Data Field    ${case_detail}    _gsb.aScoreRemark    ["SUCCESS"]
+    Verify Customer Data Field    ${case_detail}    _gsb.aScoreGrade    A
+    Log    7.1.5: submit.aScore triggered and verified.
+
     Log    7.2: Verifying available escalation roles for CA...
     ${task_details}=    Get Task Details    ${session_id}    ${case_id}
     ${expected_must_have_roles}=    Set Variable    ${scenario['expected']['available_escalation_roles']['ca']}

@@ -8,7 +8,27 @@ NORMAL_P_LOAN_BASE_ANSWERS = {
     "initial_questions": [
         {
             "field_name": "_gsb.aScoreGrade",
-            "field_value": "A",
+            "field_value": "B",
+            "source": "customer"
+        },
+        {
+            "field_name": "_gsb.aScoreRemark",
+            "field_value": "[\"SUCCESS\"]",
+            "source": "customer"
+        },
+        {
+            "field_name": "_gsb.aScoreDescription",
+            "field_value": "ความเสี่ยงปานกลาง",
+            "source": "customer"
+        },
+        {
+            "field_name": "_gsb.aScoreModelVersion",
+            "field_value": "v1.0",
+            "source": "customer"
+        },
+        {
+            "field_name": "_gsb.aScoreModel",
+            "field_value": "INITIAL",
             "source": "customer"
         },
         {
@@ -956,7 +976,27 @@ NORMAL_NANO_LOAN_BASE_ANSWERS = {
     "initial_questions": [
         {
             "field_name": "_gsb.aScoreGrade",
-            "field_value": "A",
+            "field_value": "B",
+            "source": "customer"
+        },
+        {
+            "field_name": "_gsb.aScoreRemark",
+            "field_value": "[\"SUCCESS\"]",
+            "source": "customer"
+        },
+        {
+            "field_name": "_gsb.aScoreDescription",
+            "field_value": "ความเสี่ยงปานกลาง",
+            "source": "customer"
+        },
+        {
+            "field_name": "_gsb.aScoreModelVersion",
+            "field_value": "v1.0",
+            "source": "customer"
+        },
+        {
+            "field_name": "_gsb.aScoreModel",
+            "field_value": "INITIAL",
             "source": "customer"
         },
         {

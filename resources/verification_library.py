@@ -1,3 +1,15 @@
+def find_task_id_by_method_substring(tasks, substring):
+    """
+    หา task_id แรกที่ task_method_name มี substring ที่กำหนด
+    """
+    for task in tasks:
+        task_method_name = str(task.get('task_method_name', ''))
+        if substring in task_method_name:
+            return task.get('task_id')
+
+    raise AssertionError(f"No task with method name containing '{substring}' found in claimed tasks.")
+
+
 def verify_task_name_substrings(claimed_tasks, expected_substrings):
     """
     ตรวจสอบว่า Task ที่ Claim มา มี method name ตรงกับที่คาดหวังหรือไม่
