@@ -1,3 +1,25 @@
+def build_field_payload_list(fields_from_detail, filter_empty=False):
+    """
+    แปลง fields list จาก task detail ให้เป็น payload format
+    ({field_name, field_value})
+
+    ถ้า filter_empty=True จะกรอง field ที่ current_value ว่าง/None ออก
+    (ใช้กับ required_fields เพื่อป้องกัน service ตอบ
+    "Missing required field value to check" 500)
+    """
+    result = []
+    for field_item in fields_from_detail:
+        field = field_item.get('field', {})
+        current_value = field.get('current_value', '')
+        if filter_empty and (current_value is None or current_value == ''):
+            continue
+        result.append({
+            'field_name': field.get('field_name'),
+            'field_value': current_value if current_value is not None else ''
+        })
+    return result
+
+
 def find_task_id_by_method_substring(tasks, substring):
     """
     หา task_id แรกที่ task_method_name มี substring ที่กำหนด

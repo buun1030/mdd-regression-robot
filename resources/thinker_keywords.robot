@@ -2,6 +2,7 @@
 Library    RequestsLibrary
 Library    Collections
 Library    OperatingSystem
+Library    ../resources/verification_library.py
 
 ***Variables***
 ${THINKER_BASE_URL}    https://moneydd-dev.thinkerfint.com
@@ -140,34 +141,31 @@ Edit Task Data
 
 Verify Tasks
     [Arguments]    ${session_id}    ${case_id}
-    ${task_details}=    Get Task Details    ${session_id}    ${case_id}
-    FOR    ${task_id}    ${detail_data}    IN    &{task_details}
-        &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}
-        @{verifying_fields}=    Create List
-        IF    'verifying_fields' in $detail_data
-            FOR    ${field_i}    IN    @{detail_data['verifying_fields']}
-                ${field}=    Set Variable    ${field_i['field']}
-                &{field_data}=    Create Dictionary    field_name=${field['field_name']}    field_value=${field['current_value']}
-                Append To List    ${verifying_fields}    ${field_data}
-            END
-        END
-        @{required_fields}=    Create List
-        IF    'required_fields' in $detail_data
-            FOR    ${field_i}    IN    @{detail_data['required_fields']}
-                ${field}=    Set Variable    ${field_i['field']}
-                &{field_data}=    Create Dictionary    field_name=${field['field_name']}    field_value=${field['current_value']}
-                Append To List    ${required_fields}    ${field_data}
-            END
-        END
-        &{payload}=    Create Dictionary    task_id=${task_id}    verifying_fields=${verifying_fields}    required_fields=${required_fields}
-        ${task}=    Set Variable    ${detail_data['task']}
-        IF    '${task['status']}' == 'claimed'
-            ${response}=    POST On Session    alias=thinker-session    url=/question-taskpool/api/v1/verify-task-data    json=${payload}    headers=${headers}
-            Status Should Be    200    ${response}
-            ${code}=    Set Variable    ${response.json()}[code]
-            Should Be Equal As Integers    ${code}    0
-        END
+    ${task_ids}=    Get Task Ids    ${session_id}    ${case_id}
+    FOR    ${task_id}    IN    @{task_ids}
+        Wait Until Keyword Succeeds    5x    3s
+        ...    Verify Single Task    ${session_id}    ${task_id}
     END
+
+Verify Single Task
+    [Arguments]    ${session_id}    ${task_id}
+    ${detail_response}=    Post Get Task Detail    ${session_id}    ${task_id}
+    ${detail_data}=    Set Variable    ${detail_response.json()}[data]
+    ${task}=    Set Variable    ${detail_data['task']}
+    IF    '${task['status']}' != 'claimed'
+        Log    Skipping ${task_id}: status=${task['status']} (auto-released or already verified)
+        RETURN
+    END
+    ${verifying_fields_raw}=    Get From Dictionary    ${detail_data}    verifying_fields    default=${{[]}}
+    ${required_fields_raw}=    Get From Dictionary    ${detail_data}    required_fields    default=${{[]}}
+    ${verifying_fields}=    Build Field Payload List    ${verifying_fields_raw}    filter_empty=${False}
+    ${required_fields}=    Build Field Payload List    ${required_fields_raw}    filter_empty=${True}
+    &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}
+    &{payload}=    Create Dictionary    task_id=${task_id}    verifying_fields=${verifying_fields}    required_fields=${required_fields}
+    ${response}=    POST On Session    alias=thinker-session    url=/question-taskpool/api/v1/verify-task-data    json=${payload}    headers=${headers}
+    Status Should Be    200    ${response}
+    ${code}=    Set Variable    ${response.json()}[code]
+    Should Be Equal As Integers    ${code}    0
 
 Get Booking Detail
     [Arguments]    ${session_id}    ${case_id}
