@@ -61,7 +61,11 @@ Normal Workflow
     Verify Task Name Substrings    ${claimed_tasks_data}    ${expected_task_substrings}
 
     Log    7.1.5: Triggering submit.aScore module...
-    ${trigger_task_id}=    Find Task Id By Method Substring    ${claimed_tasks_data}    aScore
+    # Backend auto-cancels claimed tasks + creates fresh available ones (~3-5s after step 7.1 claim).
+    # Re-claim to get fresh task list (only claimed tasks are visible to us).
+    Sleep    10s
+    ${trigger_claimed_tasks}=    Claim Case    ${session_id}    ${case_id}
+    ${trigger_task_id}=    Find Task Id By Method Substring    ${trigger_claimed_tasks}    aScore
     Call Triggering Module Sync    ${session_id}    ${case_id}    ${trigger_task_id}    thinker.isManualAScoreSuccess    submit.aScore
     Sleep    5s
     ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}

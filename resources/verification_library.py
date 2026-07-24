@@ -23,11 +23,12 @@ def build_field_payload_list(fields_from_detail, filter_empty=False):
 def find_task_id_by_method_substring(tasks, substring):
     """
     หา task_id แรกที่ task_method_name มี substring ที่กำหนด
+    (task list จาก /claim-case ใช้ field 'id' ไม่ใช่ 'task_id')
     """
     for task in tasks:
         task_method_name = str(task.get('task_method_name', ''))
         if substring in task_method_name:
-            return task.get('task_id')
+            return task.get('id')
 
     raise AssertionError(f"No task with method name containing '{substring}' found in claimed tasks.")
 
