@@ -55,17 +55,17 @@ Normal Workflow
     ${session_id}    ${case_id}    ${customer_info_national_id_answer}=    Initial Normal Workflow    ${scenario}    ${customer_info_national_id_answer}
 
     Log    Step 7: CA Role...
+    # After CA decision appears, backend still traverses the tree for ~15s and re-creates
+    # tasks in multiple rounds. Claiming too early gets tasks from a non-final round
+    # (backend cancels them a few seconds later → task_id becomes stale).
+    Sleep    15s
     Log    7.1: Claiming CA case...
     ${claimed_tasks_data}=    Claim Case    ${session_id}    ${case_id}
     ${expected_task_substrings}=    Set Variable    ${scenario['expected']['task_name_substrings']['ca']}
     Verify Task Name Substrings    ${claimed_tasks_data}    ${expected_task_substrings}
 
     Log    7.1.5: Triggering submit.aScore module...
-    # Backend auto-cancels claimed tasks + creates fresh available ones (~3-5s after step 7.1 claim).
-    # Re-claim to get fresh task list (only claimed tasks are visible to us).
-    Sleep    10s
-    ${trigger_claimed_tasks}=    Claim Case    ${session_id}    ${case_id}
-    ${trigger_task_id}=    Find Task Id By Method Substring    ${trigger_claimed_tasks}    aScore
+    ${trigger_task_id}=    Find Task Id By Method Substring    ${claimed_tasks_data}    aScore
     Call Triggering Module Sync    ${session_id}    ${case_id}    ${trigger_task_id}    thinker.isManualAScoreSuccess    submit.aScore
     Sleep    5s
     ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}
