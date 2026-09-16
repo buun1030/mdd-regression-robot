@@ -2,6 +2,8 @@
 Defines the scenarios for the end-to-end tests.
 """
 
+import copy
+
 valid_base64_content = "[\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAABmklEQVR4nOyYMdKrMAyE10ORkiNwFB8NH81HyREoKTzeN5LsxDC89p+gQVXwfCmQxGplPPHEEz8bMyV2RAaS7/HIFSBn0z6TVR/WsLcjZ0BkVSCU17YI1458AqnixZYHtwBi0q6O/8vD7YHewnViL/dF298dMEGa86pdnaXcVyJ2c6BzebVXXysu4+ZAl2LNg3S1fcIstwKwkMCLGVJNACpB6du0PgAZlXUimYK8uijRtjAdEuUBYLYfWm59kDx8W9cHIK+uA4WD0spYcQaIuBbMTJi4SToo2RiU1gcA/VLF005q3asq1aBRLgAdkgW93NnMXqpHe3B/4B2T2oHEYp62PcAbwJaOoi0OLXfwBoj62oYyqXXnLrM2DG7QBSDlLubyhokDwBlgu4mezcytq4+L2M8Dn6I2vWXYRY9CgSvgc6OV2kCxy4Hxry6AtiJHXSrFGJzz4ATodyBayJE2XQ4S5AiwdXnJqGdv7woQjZJ9c+WFPfAAtOurVTC1BxtOa7UHoN9ooXlaW1rGhdQD8MQTT/x5/AsAAP//oCbiyX1d9MUAAAAASUVORK5CYII=\"]"
 
 NORMAL_P_LOAN_BASE_ANSWERS = {
@@ -3920,3 +3922,108 @@ GSB_LEAD_SECOND_NANO_LOAN_CALC_CASES = [
     #     }
     # }
 ]
+
+# ---------------------------------------------------------------------------
+# Booking upload-failure scenario
+#
+# ทำให้ Mambu ปฏิเสธเอกสารตอน thinker-connector ยิง POST /documents โดยเปลี่ยน
+# ชื่อไฟล์ให้เป็นนามสกุลที่ไม่อยู่ใน whitelist ของ Mambu ส่วน content ยังเป็น
+# base64 png ที่ใช้ได้จริง เพื่อให้พังที่ขั้น upload เท่านั้น ไม่ใช่ขั้นดึงไฟล์
+#
+# ยืนยันกับ Mambu sandbox แล้ว (2026-09-03):
+#   evil.exe  -> HTTP 400 errorCode 972 FILE_EXTENSION_NOT_ALLOWED
+#   test.png  -> HTTP 201
+# ทางเลือกสำรองถ้า whitelist ฝั่ง Mambu เปลี่ยน: ใช้ชื่อที่ไม่มีนามสกุลเลย
+# ("no_extension") ซึ่งได้ HTTP 400 errorCode 4 INVALID_PARAMETERS
+#
+# connector ไม่ได้อ่าน _documents.N.docType เลย (อ่านแค่ name/content/password)
+# จึงไม่ต้องแก้ docType ให้สอดคล้องกับนามสกุลใหม่
+# ---------------------------------------------------------------------------
+
+REJECTED_BY_MAMBU_FILE_NAME = "[\"evil.exe\"]"
+
+# _documents.5.* เป็น slot ของ loan account (3-31) ซึ่งถูก upload ใน afterSending
+# หลัง POST /loans สำเร็จแล้ว จึงเป็น slot ที่ใช้พิสูจน์ว่า loan ถูกสร้างก่อน upload พัง
+POISONED_DOCUMENT_FIELD_NAME = "_documents.5.name"
+
+
+def _with_poisoned_document_name(answers, field_name, file_name):
+    """
+    คืน answers ชุดใหม่ที่ field_name ถูกแทนด้วย file_name (ไม่แก้ของเดิม)
+    """
+    result = copy.deepcopy(answers)
+    replaced = False
+    for answer in result["initial_questions"]:
+        if answer["field_name"] == field_name:
+            answer["field_value"] = file_name
+            replaced = True
+            break
+    if not replaced:
+        raise AssertionError(
+            f"cannot poison '{field_name}': field not found in initial_questions"
+        )
+    return result
+
+
+NORMAL_P_LOAN_UPLOAD_FAILURE_ANSWERS = _with_poisoned_document_name(
+    NORMAL_P_LOAN_BASE_ANSWERS,
+    POISONED_DOCUMENT_FIELD_NAME,
+    REJECTED_BY_MAMBU_FILE_NAME,
+)
+
+NORMAL_P_LOAN_NEW_CUSTOMER_TERM_UPLOAD_FAILURE_SCENARIO = copy.deepcopy(
+    NORMAL_P_LOAN_NEW_CUSTOMER_TERM_SCENARIO
+)
+NORMAL_P_LOAN_NEW_CUSTOMER_TERM_UPLOAD_FAILURE_SCENARIO.update({
+    "test_id": "normal_a02_p_loan_new_customer_upload_failure",
+    "answers": NORMAL_P_LOAN_UPLOAD_FAILURE_ANSWERS,
+    "booking_expected": {
+        # หลัง dev แก้ให้ connector propagate upload error กลับมา
+        "latest_status": "FAILED",
+        "success_at_least_once": False,
+        # Booking.MaxRetries = 5 (question-taskpool cfg/config.yaml)
+        # taskpool ยิง POST /results ซ้ำครบ 5 ครั้งเพราะ error นี้ไม่ใช่ error
+        # ที่ retry แล้วจะหาย (Mambu ปฏิเสธนามสกุลไฟล์ทุกครั้ง)
+        "retry_count": 5,
+        "case_status": "book_error",
+    },
+})
+
+
+# ---------------------------------------------------------------------------
+# Booking upload-failure scenario: เส้นลูกค้าเก่า (client document replace)
+#
+# beforeSending สาขาที่เจอ client อยู่แล้วจะเรียก retreiveAndReplaceClientDocuments
+# ซึ่งลบเอกสารเดิมที่ label ตรงกันออกก่อน แล้วค่อย upload ตัวใหม่ทับ
+#   - _documents.2.* -> ownerType CLIENT
+#   - _documents.1.* -> ownerType ID_DOCUMENT
+#
+# poison _documents.2.name ให้ Mambu ปฏิเสธ เพื่อดูว่า booking รับรู้หรือไม่
+# ต่างจากเทสเส้น loan account ตรงที่ความพังเกิดใน beforeSending ซึ่งอยู่ *ก่อน*
+# POST /loans ดังนั้นถ้า connector propagate error ถูกต้อง loan จะต้องไม่ถูกสร้างเลย
+# ---------------------------------------------------------------------------
+
+# _documents.2.* คือเอกสาร ownerType CLIENT ที่ถูก replace ในเส้นลูกค้าเก่า
+POISONED_CLIENT_DOCUMENT_FIELD_NAME = "_documents.2.name"
+
+NORMAL_P_LOAN_OLD_CUSTOMER_CLIENT_DOC_FAILURE_ANSWERS = _with_poisoned_document_name(
+    NORMAL_P_LOAN_BASE_ANSWERS,
+    POISONED_CLIENT_DOCUMENT_FIELD_NAME,
+    REJECTED_BY_MAMBU_FILE_NAME,
+)
+
+NORMAL_P_LOAN_OLD_CUSTOMER_TERM_CLIENT_DOC_FAILURE_SCENARIO = copy.deepcopy(
+    NORMAL_P_LOAN_OLD_CUSTOMER_TERM_SCENARIO
+)
+NORMAL_P_LOAN_OLD_CUSTOMER_TERM_CLIENT_DOC_FAILURE_SCENARIO.update({
+    "test_id": "normal_a02_p_loan_old_customer_client_doc_upload_failure",
+    "answers": NORMAL_P_LOAN_OLD_CUSTOMER_CLIENT_DOC_FAILURE_ANSWERS,
+    "booking_expected": {
+        "latest_status": "FAILED",
+        "success_at_least_once": False,
+        "retry_count": 5,
+        "case_status": "book_error",
+        # พังใน beforeSending ก่อนถึง POST /loans -> ต้องไม่มี loan ใหม่เกิดขึ้นเลย
+        "expected_loan_count": 0,
+    },
+})

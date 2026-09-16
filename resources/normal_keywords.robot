@@ -53,7 +53,53 @@ Initial Normal Workflow
 Normal Workflow
     [Arguments]    ${scenario}    ${customer_info_national_id_answer}=${None}
     ${session_id}    ${case_id}    ${customer_info_national_id_answer}=    Initial Normal Workflow    ${scenario}    ${customer_info_national_id_answer}
+    Run Normal Verification Flow    ${session_id}    ${case_id}    ${scenario}
 
+    Log    Step 12: Completed Status...
+    Sleep    10s
+    ${timeout}=    Set Variable    5 minutes
+    ${retry_interval}=    Set Variable    5s
+    ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Completed Status    ${session_id}    ${case_id}    ${scenario}
+    Log    Step 12: Completed Status verified.
+
+    Log    Step 13: Booking Detail...
+    ${booking_detail}=    Get Booking Detail    ${session_id}    ${case_id}
+    Should Not Be Empty    ${booking_detail}
+    Should Be Equal As Strings    ${booking_detail['latest_status']}    COMPLETED
+    Log    Step 13: Booking Detail retrieved.
+    
+    RETURN    ${customer_info_national_id_answer}
+
+Normal Workflow Expecting Book Error
+    [Arguments]    ${scenario}    ${customer_info_national_id_answer}=${None}
+    # เหมือน Normal Workflow ทุกอย่างจนถึง Step 11 ต่างกันแค่ Step 12/13
+    # ที่ expect ให้ booking พัง แทนที่จะสำเร็จ
+    ${session_id}    ${case_id}    ${customer_info_national_id_answer}=    Initial Normal Workflow    ${scenario}    ${customer_info_national_id_answer}
+
+    Run Normal Verification Flow    ${session_id}    ${case_id}    ${scenario}
+
+    Log    Step 12: รอ booking ทำงานจบ (ยังไม่ตัดสินว่าผลเป็นอะไร)...
+    ${booking_status}=    Wait Until Booking Report Settled    ${session_id}    ${case_id}
+    Log    Step 12: booking settled as ${booking_status}.
+
+    Log    Step 13: Booking Detail (expecting FAILED)...
+    # ถ้า connector ยังไม่ได้ fix จะแดงตรงนี้ทันทีพร้อมข้อความว่าได้ COMPLETED
+    # ไม่ต้องรอ timeout เพราะ booking ทำงานจบไปแล้วจาก Step 12
+    ${booking_detail}=    Check Booking Report Failed    ${session_id}    ${case_id}    ${scenario}
+    Log    Step 13: Booking Detail verified as FAILED.
+
+    Log    Step 14: Case Status (expecting book_error)...
+    # case flip เป็น book_error หลัง booking report ถูก update แล้ว เผื่อ 45s พอ
+    ${case_detail}=    Wait Until Keyword Succeeds    45s    5s
+    ...    Check Book Error Status    ${session_id}    ${case_id}    ${scenario}
+    Log    Step 14: Case Status verified as book_error.
+
+    RETURN    ${session_id}    ${case_id}    ${customer_info_national_id_answer}
+
+Run Normal Verification Flow
+    [Arguments]    ${session_id}    ${case_id}    ${scenario}
+    # Step 7-11 ที่ Normal Workflow และ Normal Workflow Expecting Book Error
+    # ใช้ร่วมกัน (CA -> SCA -> MD -> Approved -> Customer Decision)
     Log    Step 7: CA Role...
     # After CA decision appears, backend still traverses the tree for ~15s and re-creates
     # tasks in multiple rounds. Claiming too early gets tasks from a non-final round
@@ -200,21 +246,6 @@ Normal Workflow
     Log    Step 11: Customer Decision...
     Answer Questions    ${session_id}    ${case_id}    ${scenario['customer_decision']}
     Log    Step 11: Customer Decision answered.
-
-    Log    Step 12: Completed Status...
-    Sleep    10s
-    ${timeout}=    Set Variable    5 minutes
-    ${retry_interval}=    Set Variable    5s
-    ${case_detail}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}    Check Completed Status    ${session_id}    ${case_id}    ${scenario}
-    Log    Step 12: Completed Status verified.
-
-    Log    Step 13: Booking Detail...
-    ${booking_detail}=    Get Booking Detail    ${session_id}    ${case_id}
-    Should Not Be Empty    ${booking_detail}
-    Should Be Equal As Strings    ${booking_detail['latest_status']}    COMPLETED
-    Log    Step 13: Booking Detail retrieved.
-    
-    RETURN    ${customer_info_national_id_answer}
 
 Mambu Workflow
     [Arguments]    ${customer_info_national_id_answer}    ${repayment_amount}    ${fee_amount}=${None}

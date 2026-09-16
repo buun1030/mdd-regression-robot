@@ -72,6 +72,64 @@ Check Completed Status
     Should Be Equal    ${case_detail['status']}    completed    Expected 'case_status' with 'completed' value not found
     RETURN   ${case_detail}
 
+Booking Report Should Be Settled
+    [Arguments]    ${session_id}    ${case_id}
+    # latest_status เริ่มที่ WAITING แล้วจบที่ COMPLETED หรือ FAILED
+    # keyword นี้แค่รอให้ booking "ทำงานจบ" ไม่ตัดสินว่าผลเป็นอะไร
+    ${status}=    Get Booking Latest Status    ${session_id}    ${case_id}
+    Should Not Be Empty    ${status}    booking report ยังไม่ถูกสร้างสำหรับ case นี้
+    Should Not Be Equal As Strings    ${status}    WAITING    booking ยังทำงานไม่เสร็จ (WAITING)
+    RETURN    ${status}
+
+Wait Until Booking Report Settled
+    [Arguments]    ${session_id}    ${case_id}    ${timeout}=3 minutes    ${retry_interval}=5s
+    # แยกการ "รอ" ออกจากการ "assert ผลลัพธ์" เพราะถ้ารวมกันแล้วผลจริงไม่ตรงกับที่
+    # expect (เช่นยังไม่ได้ fix connector -> ได้ COMPLETED) Wait Until Keyword
+    # Succeeds จะวนจนหมด timeout แล้วค่อยแดง ทั้งที่รู้ผลตั้งแต่ครั้งแรก
+    #
+    # 3 นาทีเผื่อไว้สำหรับ 5 retries (Booking.MaxRetries) x round-trip ของ
+    # connector ที่ต้องยิง Mambu ครบทุกขั้นในแต่ละรอบ
+    ${status}=    Wait Until Keyword Succeeds    ${timeout}    ${retry_interval}
+    ...    Booking Report Should Be Settled    ${session_id}    ${case_id}
+    Log    booking settled as: ${status}
+    RETURN    ${status}
+
+Check Book Error Status
+    [Arguments]    ${session_id}    ${case_id}    ${scenario}
+    # taskpool set case เป็น book_error หลัง booking fail (task_action_handler.go:386-405)
+    # ซึ่งเกิดหลังจาก booking report ถูก update แล้ว จึงต้องเรียก keyword นี้
+    # หลัง Wait Until Booking Report Settled และเผื่อเวลาสั้น ๆ พอ
+    ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}
+    ${loan_result_found}=    Set Variable    ${False}
+    FOR    ${item}    IN    @{case_detail['customer_data']}
+        IF    '${item['field_name']}' == 'thinker.loanResult' and '${item['value']}' == '${scenario['expected']['loan_result']}'
+            ${loan_result_found}=    Set Variable    ${True}
+            BREAK
+        END
+    END
+    Should Be True     ${loan_result_found}    Expected 'thinker.loanResult' with '${scenario['expected']['loan_result']}' value not found
+    Should Be Equal    ${case_detail['status']}    ${scenario['booking_expected']['case_status']}
+    ...    Expected case status '${scenario['booking_expected']['case_status']}' but got '${case_detail['status']}'
+    RETURN   ${case_detail}
+
+Check Booking Report Failed
+    [Arguments]    ${session_id}    ${case_id}    ${scenario}
+    ${booking_detail}=    Get Booking Detail    ${session_id}    ${case_id}
+    Should Not Be Empty    ${booking_detail}
+    ${expected}=    Set Variable    ${scenario['booking_expected']}
+    Should Be Equal As Strings     ${booking_detail['latest_status']}    ${expected['latest_status']}
+    ...    Expected latest_status '${expected['latest_status']}' but got '${booking_detail['latest_status']}'
+    Should Be Equal    ${booking_detail['success_at_least_once']}    ${expected['success_at_least_once']}
+    ...    Expected success_at_least_once '${expected['success_at_least_once']}' but got '${booking_detail['success_at_least_once']}'
+    Should Be Equal As Integers    ${booking_detail['retry_count']}    ${expected['retry_count']}
+    ...    Expected retry_count '${expected['retry_count']}' but got '${booking_detail['retry_count']}'
+    # latest_result เก็บ response body ทั้งก้อนจาก connector เป็น
+    # {"code":<http status>,"payload":"<body>"} ตอน fail ต้องไม่ใช่ 2xx
+    Should Not Contain    ${booking_detail['latest_result']}    "code":200
+    Should Not Contain    ${booking_detail['latest_result']}    "code":201
+    Log    booking latest_result: ${booking_detail['latest_result']}
+    RETURN   ${booking_detail}
+
 Check Customer Decision Unknown
     [Arguments]    ${session_id}    ${case_id}
     ${case_detail}=    Get Case Detail    ${session_id}    ${case_id}

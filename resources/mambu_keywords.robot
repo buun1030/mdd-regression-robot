@@ -30,6 +30,47 @@ Search Loans By Account Holder Id
     Status Should Be    200    ${response}
     RETURN    ${response.json()}
 
+Get Client Documents Metadata
+    [Arguments]    ${client_key}
+    # ใช้ได้เฉพาะ client เท่านั้น - Mambu v2 ไม่มี endpoint แบบเดียวกันสำหรับ loan
+    # account (/loans/{id}/documentsMetadata -> 404 INVALID_API_OPERATION)
+    #
+    # คืนเอกสารที่ ownerType เป็น CLIENT และ ID_DOCUMENT ของ client รายนี้
+    # ซึ่งก็คือ _documents.2.* และ _documents.1.* ที่ upload ใน beforeSending
+    ${response}=    GET On Session    alias=mambu-session    url=/clients/${client_key}/documentsMetadata
+    Status Should Be    200    ${response}
+    RETURN    ${response.json()}
+
+Count Documents By Notes Prefix
+    [Arguments]    ${documents}    ${notes_prefix}
+    # เอกสารในระบบตั้งชื่อไฟล์ซ้ำกันเยอะ (test.png หลาย slot) ตัวที่แยกประเภทจริง
+    # คือ label ภาษาไทยที่อยู่หน้าสุดของ notes จึงต้อง group ด้วย notes ไม่ใช่ name
+    ${count}=    Set Variable    ${0}
+    FOR    ${doc}    IN    @{documents}
+        ${notes}=    Get From Dictionary    ${doc}    notes    default=${EMPTY}
+        IF    $notes is not None and str($notes).startswith($notes_prefix)
+            ${count}=    Evaluate    ${count} + 1
+        END
+    END
+    RETURN    ${count}
+
+Search Loans By Case Id
+    [Arguments]    ${case_id}
+    # thinker-connector เก็บ case_id ไว้ใน custom field _thinker.caseId ของ loan
+    # (results.service.ts -> beforeSending: _thinker: {caseId: rawResult.case_id})
+    # ยืนยันแล้วว่า Mambu search ด้วย field นี้ได้ (EQUALS -> เจอ)
+    #
+    # ต้องใช้วิธีนี้เพราะ Mambu v2 ไม่มี endpoint ลิสต์เอกสารของ loan account
+    # (/loans/{id}/documentsMetadata -> 404 INVALID_API_OPERATION) เลยยืนยัน
+    # ผลการ upload ตรง ๆ ไม่ได้ ทำได้แค่ยืนยันว่า loan ถูกสร้างจริง
+    &{filter_criteria}=    Create Dictionary    field=_thinker.caseId    operator=EQUALS    value=${case_id}
+    @{filter_criteria_list}=    Create List    ${filter_criteria}
+    &{payload}=    Create Dictionary    filterCriteria=${filter_criteria_list}
+    ${full_url}=    Catenate    SEPARATOR=/    ${MAMBU_BASE_URL}    loans:search
+    ${response}=    POST On Session    alias=mambu-session    url=${full_url}    json=${payload}
+    Status Should Be    200    ${response}
+    RETURN    ${response.json()}
+
 Change Loan State
     [Arguments]    ${loan_id}    ${action}    ${notes}
     &{payload}=    Create Dictionary    action=${action}    notes=${notes}

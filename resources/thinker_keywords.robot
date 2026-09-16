@@ -175,6 +175,23 @@ Get Booking Detail
     Status Should Be    200    ${response}
     RETURN    ${response.json()}[data]
 
+Get Booking Latest Status
+    [Arguments]    ${session_id}    ${case_id}
+    # คืน latest_status หรือ '' ถ้ายังไม่มี booking report row
+    # (taskpool insert row เป็น WAITING ตอน case กลายเป็น completed แล้วค่อยยิง
+    #  /results ใน goroutine ดังนั้นมีช่วงที่ยังไม่มี row หรือยังเป็น WAITING)
+    &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}
+    &{payload}=    Create Dictionary    case_id=${case_id}
+    ${response}=    POST On Session    alias=thinker-session    url=/question-taskpool/api/v1/get-booking-report-detail    json=${payload}    headers=${headers}    expected_status=any
+    IF    ${response.status_code} != 200
+        RETURN    ${EMPTY}
+    END
+    ${data}=    Get From Dictionary    ${response.json()}    data    default=${None}
+    IF    ${data} == ${None}
+        RETURN    ${EMPTY}
+    END
+    RETURN    ${data['latest_status']}
+
 Get National ID From Answers
     [Arguments]    ${answers}
     FOR    ${answer}    IN    @{answers}
