@@ -44,6 +44,39 @@ Then edit `vars.yaml` with the real values.
 
 You can run the tests in parallel using `pabot` or sequentially using `robot`.
 
+### Keep each run's output separate (recommended)
+
+By default Robot writes `log.html`, `report.html` and `output.xml` into the current directory, so every run overwrites the previous one. Use `--outputdir` to give each run its own folder under `results/` (already in `.gitignore`, so nothing there is committed):
+
+```bash
+robot --outputdir results/$(date +%Y%m%d-%H%M%S) -t "Run Normal A02 P-Loan Base Scenario" tests/normal_base.robot
+```
+
+Artifacts written by tests also go into that folder. For example `booking_upload_failure.robot` saves the Mambu loan document lists it compares:
+
+```
+results/<run>/
+├── log.html  report.html  output.xml
+├── loan_documents/
+│   ├── <case_id>_1_after_auto_booking.json    # Step 14: right after automatic booking + taskpool auto retries (captured before any assertion)
+│   └── <case_id>_2_after_manual_rebook.json   # Step 21: after fixing the broken document + manual rebook
+└── evidence/
+    ├── <case_id>_1_after_auto_booking.json    # system state before the fix (case status, fields, booking report)
+    ├── <case_id>_2_after_manual_rebook.json   # system state after the manual rebook
+    └── <case_id>_summary.md                   # before/after table — use this (or the same table in log.html) as the test result screenshot
+```
+
+`log.html` links to every file and shows the before/after table under Step 21.
+
+Evidence values are read from the system at that moment (`get-case-detail` = `customer_data` in the DB, `get-booking-report-detail`, Mambu `documentsMetadata`), not from what the test intended to send. The DB keeps only the latest value of a field, so the "before" value (e.g. `_documents.5.name = evil.exe`) cannot be screenshotted from the DB after the run — use the evidence files instead. If you run without `--outputdir`, `loan_documents/` and `evidence/` are created at the repo root (also ignored).
+
+Flags for `booking_upload_failure.robot`:
+
+| flag | default | effect |
+|---|---|---|
+| `-v CHECK_UPLOAD_DEDUPE:False` | `True` | skip Step 19 (no duplicated loan documents after auto retries) |
+| `-v CHECK_MANUAL_RETRY:False` | `True` | skip Step 20-21 (fix the broken document, manual rebook, expect exactly 1 new document) |
+
 ### Parallel Execution
 
 Run all tests in parallel:
@@ -90,10 +123,10 @@ Run by tag (if your tests use tags):
 robot -i <tag-name> tests
 ```
 
-Output reports (`log.html`, `report.html`, `output.xml`) are written to the current directory by default. Use `-d results` to send them elsewhere:
+Output reports (`log.html`, `report.html`, `output.xml`) are written to the current directory by default. `-d` (= `--outputdir`) sends them elsewhere — a fixed folder like `-d results` is still overwritten on every run, so add a timestamp to keep each run (see [Keep each run's output separate](#keep-each-runs-output-separate-recommended)):
 
 ```bash
-robot -d results -t "Run Normal A02 P-Loan Base Scenario" tests/normal_base.robot
+robot -d results/$(date +%Y%m%d-%H%M%S) -t "Run Normal A02 P-Loan Base Scenario" tests/normal_base.robot
 ```
 
 ## Troubleshooting

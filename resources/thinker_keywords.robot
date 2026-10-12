@@ -175,6 +175,18 @@ Get Booking Detail
     Status Should Be    200    ${response}
     RETURN    ${response.json()}[data]
 
+Send Case To External
+    [Arguments]    ${session_id}    ${case_id}
+    # manual rebook แบบเดียวกับที่ ops กด retry (autoFromSystem = false -> retry 1 ครั้ง)
+    # synchronous: response กลับหลัง connector ทำงานจบทั้ง flow (รวม upload เอกสาร)
+    # จึงต้องตั้ง timeout ยาว และไม่บังคับ status เพราะ booking อาจพังซ้ำได้ตามที่ตั้งใจ
+    &{headers}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${session_id}
+    &{payload}=    Create Dictionary    case_id=${case_id}
+    ${response}=    POST On Session    alias=thinker-session    url=/question-taskpool/api/v1/send-case-to-external
+    ...    json=${payload}    headers=${headers}    expected_status=any    timeout=180
+    Log    send-case-to-external -> HTTP ${response.status_code}: ${response.text}
+    RETURN    ${response}
+
 Get Booking Latest Status
     [Arguments]    ${session_id}    ${case_id}
     # คืน latest_status หรือ '' ถ้ายังไม่มี booking report row

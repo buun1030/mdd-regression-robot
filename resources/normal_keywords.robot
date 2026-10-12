@@ -85,14 +85,15 @@ Normal Workflow Expecting Book Error
     Log    Step 13: Booking Detail (expecting FAILED)...
     # ถ้า connector ยังไม่ได้ fix จะแดงตรงนี้ทันทีพร้อมข้อความว่าได้ COMPLETED
     # ไม่ต้องรอ timeout เพราะ booking ทำงานจบไปแล้วจาก Step 12
-    ${booking_detail}=    Check Booking Report Failed    ${session_id}    ${case_id}    ${scenario}
-    Log    Step 13: Booking Detail verified as FAILED.
+    # Continue On Failure: ถ้าไม่ FAILED เทสยัง FAIL แต่รันต่อให้เทสเก็บหลักฐานได้
+    Run Keyword And Continue On Failure    Check Booking Report Failed    ${session_id}    ${case_id}    ${scenario}
+    Log    Step 13: Booking Detail checked.
 
     Log    Step 14: Case Status (expecting book_error)...
     # case flip เป็น book_error หลัง booking report ถูก update แล้ว เผื่อ 45s พอ
-    ${case_detail}=    Wait Until Keyword Succeeds    45s    5s
+    Run Keyword And Continue On Failure    Wait Until Keyword Succeeds    45s    5s
     ...    Check Book Error Status    ${session_id}    ${case_id}    ${scenario}
-    Log    Step 14: Case Status verified as book_error.
+    Log    Step 14: Case Status checked.
 
     RETURN    ${session_id}    ${case_id}    ${customer_info_national_id_answer}
 

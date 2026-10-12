@@ -3965,6 +3965,28 @@ def _with_poisoned_document_name(answers, field_name, file_name):
     return result
 
 
+def _count_loan_document_slots(answers):
+    """
+    นับ slot เอกสารที่ connector จะ upload เข้า loan account
+    (afterLoanAccountCreated: _documents.3 - _documents.44 และ _documents.spouse.1-4)
+    นับเฉพาะ slot ที่มีทั้ง .name และ .content เหมือนเงื่อนไข fileName && fileUrl
+    ของ connector
+
+    base scenario ได้ 25 ตรงกับจำนวนเอกสารจริงบน loan ใน sandbox
+    (case 2441e91c-a9a4-409a-bf67-6b230c05643f, ตรวจ 2026-10-09)
+    """
+    def has_value(value):
+        return value not in (None, "", "[]", '[""]')
+
+    values = {a["field_name"]: a["field_value"] for a in answers["initial_questions"]}
+    slots = [str(i) for i in range(3, 45)] + [f"spouse.{i}" for i in range(1, 5)]
+    return sum(
+        1 for slot in slots
+        if has_value(values.get(f"_documents.{slot}.name"))
+        and has_value(values.get(f"_documents.{slot}.content"))
+    )
+
+
 NORMAL_P_LOAN_UPLOAD_FAILURE_ANSWERS = _with_poisoned_document_name(
     NORMAL_P_LOAN_BASE_ANSWERS,
     POISONED_DOCUMENT_FIELD_NAME,
@@ -3986,6 +4008,26 @@ NORMAL_P_LOAN_NEW_CUSTOMER_TERM_UPLOAD_FAILURE_SCENARIO.update({
         # ที่ retry แล้วจะหาย (Mambu ปฏิเสธนามสกุลไฟล์ทุกครั้ง)
         "retry_count": 5,
         "case_status": "book_error",
+        # opf-1566: connector approve loan ก่อน upload เอกสาร
+        # upload พังแล้ว loan ต้องเป็น APPROVED แล้ว ไม่ค้าง PENDING_APPROVAL
+        "expected_loan_state": "APPROVED",
+        # ต้องพังเพราะ evil.exe จริง ไม่ใช่พังจากสาเหตุอื่นก่อนถึงขั้น upload
+        # (เช่น getAllDocuments ของ opj-1559 ยิง Mambu ผิด) ซึ่งจะทำให้เทสเขียว
+        # แบบหลอกได้ เพราะเอกสารไม่ถูก upload เลยก็ไม่มีวันซ้ำ
+        "expected_error_substring": "FILE_EXTENSION_NOT_ALLOWED",
+        # opj-1559: หลัง retry ครบ เอกสารบน loan ต้องครบทุก slot ยกเว้น slot ที่
+        # poison ไว้ (ถูก Mambu ปฏิเสธทุกรอบ) ไม่ขาดและไม่เกิน
+        # ถ้าขาด -> connector ข้ามไฟล์ที่ควร upload (เช่น dedupe ด้วย fileName
+        #           ทำให้ slot ที่ชื่อไฟล์ซ้ำกับใบที่ขึ้นไปแล้วถูกข้าม)
+        # ถ้าเกิน -> retry upload ซ้ำ
+        "expected_loan_document_count": _count_loan_document_slots(NORMAL_P_LOAN_UPLOAD_FAILURE_ANSWERS) - 1,
+        # Step 20: แก้ slot ที่ poison ให้เป็นชื่อไฟล์ที่ Mambu รับ แล้ว manual rebook
+        # ใช้ชื่อไม่ซ้ำกับไฟล์อื่น เพื่อให้เห็นชัดใน file list ว่าใบไหนคือใบที่เพิ่มมา
+        "fixed_document": {
+            "field_name": POISONED_DOCUMENT_FIELD_NAME,
+            "field_value": "[\"slot5_fixed.png\"]",
+            "expected_file_name": "slot5_fixed.png",
+        },
     },
 })
 

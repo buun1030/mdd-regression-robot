@@ -16,6 +16,10 @@ output.xml
 .pabotsuitenames
 pabot_results/
 results/
+# หลักฐานที่ booking_upload_failure.robot เก็บไว้ (${OUTPUT DIR}/loan_documents/, ${OUTPUT DIR}/evidence/)
+# ถ้ารันโดยไม่ใส่ --outputdir จะถูกเขียนที่ root ของ repo
+loan_documents/
+evidence/
 interactive_console_output.xml
 
 *.png
